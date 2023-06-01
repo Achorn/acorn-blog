@@ -7,6 +7,8 @@ import { AuthProvider } from "./context/AuthContext";
 import { useAuth } from "./context/AuthContext";
 
 function App() {
+  // const [uid, setUid] = useState("");
+
   return (
     <div className="App">
       <AuthProvider>
@@ -36,9 +38,11 @@ function Account() {
   const handleLogout = async () => {
     await logOut()
       .then(() => {
+        // Sign-out successful.
         console.log("Signed out successfully");
       })
       .catch((error) => {
+        // An error happened.
         console.log(error.message);
       });
   };

@@ -36,9 +36,11 @@ function Account() {
   const handleLogout = async () => {
     await logOut()
       .then(() => {
+        // Sign-out successful.
         console.log("Signed out successfully");
       })
       .catch((error) => {
+        // An error happened.
         console.log(error.message);
       });
   };
