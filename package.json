@@ -1,5 +1,6 @@
 {
   "name": "acorn-blog",
+  "homepage": "https://achorn.github.io/acorn-blog",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

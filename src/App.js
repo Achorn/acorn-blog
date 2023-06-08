@@ -11,7 +11,7 @@ function App() {
   return (
     <div className="App">
       <AuthProvider>
-        <Router>
+        <Router basename="/acorn-blog">
           <Routes>
             <Route exact path="/" element={<Home />} />
             <Route exact path={"/signup"} element={<SignUp />} />
