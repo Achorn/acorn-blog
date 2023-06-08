@@ -2,6 +2,7 @@ import React from "react";
 import Nav from "./components/nav/Nav";
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
+import { NavLink } from "react-router-dom";
 import {
   collection,
   addDoc,
@@ -48,8 +49,8 @@ const Home = () => {
           ...doc.data(),
           key: doc.id,
         }));
+
         setEntries(newData);
-        console.log("Entries: ", newData.join(", "));
       });
     } catch (error) {
       console.log(error);
@@ -100,13 +101,21 @@ const Home = () => {
       {createEntry()}
       <div>
         {entries?.map((entry, i) => (
-          <div>
-            <h2 key={i}>{entry.title}</h2>
-            <h3>{entry.content}</h3>
-          </div>
+          <Entry key={i} entry={entry} />
         ))}
       </div>
     </div>
+  );
+};
+
+const Entry = ({ entry }) => {
+  return (
+    <NavLink to={`/Entry/${entry.key}`}>
+      <div className="Entry-container">
+        <h2>{entry.title}</h2>
+        <h3>{entry.content}</h3>
+      </div>
+    </NavLink>
   );
 };
 
