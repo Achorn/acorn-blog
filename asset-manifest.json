@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/acorn-blog/static/css/main.ac2e93bd.css",
-    "main.js": "/acorn-blog/static/js/main.d6fd3edb.js",
+    "main.js": "/acorn-blog/static/js/main.9ebedcab.js",
     "static/js/787.ec2499bf.chunk.js": "/acorn-blog/static/js/787.ec2499bf.chunk.js",
     "index.html": "/acorn-blog/index.html",
     "main.ac2e93bd.css.map": "/acorn-blog/static/css/main.ac2e93bd.css.map",
-    "main.d6fd3edb.js.map": "/acorn-blog/static/js/main.d6fd3edb.js.map",
+    "main.9ebedcab.js.map": "/acorn-blog/static/js/main.9ebedcab.js.map",
     "787.ec2499bf.chunk.js.map": "/acorn-blog/static/js/787.ec2499bf.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ac2e93bd.css",
-    "static/js/main.d6fd3edb.js"
+    "static/js/main.9ebedcab.js"
   ]
 }
