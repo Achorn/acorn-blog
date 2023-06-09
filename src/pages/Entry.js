@@ -19,7 +19,6 @@ const Entry = () => {
         let newData = {};
         newData = {
           ...doc.data(),
-          // key: doc.id,
         };
         setPost(newData);
         setIsLoadingPost(false);
