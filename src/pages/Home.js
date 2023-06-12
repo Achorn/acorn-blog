@@ -2,7 +2,7 @@ import React from "react";
 // import Nav from "../components/nav/Nav";
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   collection,
   addDoc,
@@ -14,10 +14,10 @@ import { db } from "../firebase/config";
 
 const Home = () => {
   const { user } = useAuth();
-  // const [title, setTitle] = useState("");
-  // const [content, setContent] = useState("");
+  const navigate = useNavigate();
   const [entries, setEntries] = useState([]);
   const [loadingPost, setIsLoadingPost] = useState(false);
+  const [loadingEntries, setIsLoadingEntries] = useState(false);
 
   const createEntry = async (e) => {
     console.log("triggered button");
@@ -30,13 +30,14 @@ const Home = () => {
         collection(db, "users", user.uid, "entries"),
         {
           title: "New Entry",
-          // user: user.uid,
           content: "",
           date: d,
         }
       );
       console.log("Document written with ID: ", docRef.id);
       setIsLoadingPost(false);
+      navigate(`/entry/${docRef.id}`);
+      //redirect to post
     } catch (e) {
       console.error("Error adding document: ", e);
       setIsLoadingPost(false);
@@ -45,7 +46,11 @@ const Home = () => {
 
   useEffect(() => {
     let unsubscribe;
+    console.log("in use effect");
+    if (!user || !user.uid) return;
+    setIsLoadingEntries(true);
     try {
+      console.log("UID????", user?.uid);
       const q = query(
         collection(db, "users", user.uid, "entries"),
         orderBy("date", "desc")
@@ -58,18 +63,26 @@ const Home = () => {
 
         setEntries(newData);
       });
+      setIsLoadingEntries(false);
     } catch (error) {
       console.log(error);
+      setIsLoadingEntries(false);
     }
     return () => unsubscribe();
-  }, []);
+  }, [user]);
 
+  if (loadingEntries) {
+    return <div>loading Entries...</div>;
+  }
+  if (!user) {
+    return <h1>Sing in to start Journaling!</h1>;
+  }
   return (
     <div>
-      {/* <Nav /> */}
-      <h1> Acorn Blog</h1>
-      {/* {createEntry()} */}
-      <button onClick={createEntry}>New Entry</button>
+      <h1> {user.email} Entries </h1>
+      <button onClick={createEntry} disabled={loadingPost}>
+        New Entry
+      </button>
 
       <div>
         {entries?.map((entry, i) => (
@@ -85,6 +98,7 @@ const Entry = ({ entry }) => {
     <NavLink to={`/Entry/${entry.key}`}>
       <div className="Entry-container">
         <h2>{entry.title}</h2>
+        <h4>{entry.date.toDate().toString()}</h4>
       </div>
     </NavLink>
   );

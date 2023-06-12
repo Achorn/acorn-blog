@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { doc, query, onSnapshot } from "firebase/firestore";
+import { doc, query, onSnapshot, setDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
 import { useAuth } from "../context/AuthContext";
 
@@ -12,12 +12,36 @@ const Entry = () => {
   const [content, setContent] = useState("");
   const { id } = useParams();
   const [loadingPost, setIsLoadingPost] = useState(false);
+  const [savingPost, setIsSavingPost] = useState(false);
 
-  useEffect(() => {
-    let unsubscribe;
-    setIsLoadingPost(true);
+  const saveEntry = async (e) => {
+    console.log("triggered button");
+    e.preventDefault();
+    setIsSavingPost(true);
     try {
-      const q = query(doc(db, "entries", id));
+      await setDoc(doc(db, "users", user.uid, "entries", id), {
+        title: title,
+        content: content,
+        date: post.date,
+      });
+      console.log("Document saved");
+      setIsSavingPost(false);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+      setIsSavingPost(false);
+    }
+  };
+  useEffect(() => {
+    if (!user || !user.uid) return;
+    let unsubscribe;
+
+    console.log("UID????", user.uid);
+    setIsLoadingPost(true);
+
+    try {
+      let docRef = `users/${user.uid}/entries/${id}`;
+      console.log("docRef: ", docRef);
+      const q = query(doc(db, docRef));
       unsubscribe = onSnapshot(q, (doc) => {
         let newData = {};
         newData = {
@@ -34,7 +58,7 @@ const Entry = () => {
       setIsLoadingPost(false);
     }
     return () => unsubscribe();
-  }, [id]);
+  }, [id, user]);
 
   if (loadingPost) {
     return <div>Loading...</div>;
@@ -62,8 +86,8 @@ const Entry = () => {
             <button
               type="submit"
               className="btn"
-              // onClick={addEntry}
-              disabled={loadingPost}
+              onClick={saveEntry}
+              disabled={savingPost}
             >
               Save
             </button>
