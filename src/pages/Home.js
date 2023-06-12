@@ -1,5 +1,4 @@
 import React from "react";
-// import Nav from "../components/nav/Nav";
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -79,7 +78,7 @@ const Home = () => {
   }
   return (
     <div>
-      <h1> {user.email} Entries </h1>
+      <h1> Your Entries </h1>
       <button onClick={createEntry} disabled={loadingPost}>
         New Entry
       </button>

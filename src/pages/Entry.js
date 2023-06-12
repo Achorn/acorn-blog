@@ -47,7 +47,6 @@ const Entry = () => {
         newData = {
           ...doc.data(),
         };
-
         setPost(newData);
         setTitle(newData.title);
         setContent(newData.content);
