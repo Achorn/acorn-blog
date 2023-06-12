@@ -1,7 +1,7 @@
 import React from "react";
 import "./Nav.css";
 import { NavLink } from "react-router-dom";
-import { useAuth } from "../../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 const Nav = () => {
   return (

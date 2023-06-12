@@ -1,5 +1,5 @@
 import React from "react";
-import Nav from "./components/nav/Nav";
+// import Nav from "../components/nav/Nav";
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { NavLink } from "react-router-dom";
@@ -14,24 +14,27 @@ import { db } from "../firebase/config";
 
 const Home = () => {
   const { user } = useAuth();
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  // const [title, setTitle] = useState("");
+  // const [content, setContent] = useState("");
   const [entries, setEntries] = useState([]);
   const [loadingPost, setIsLoadingPost] = useState(false);
 
-  const addEntry = async (e) => {
+  const createEntry = async (e) => {
     console.log("triggered button");
     e.preventDefault();
     setIsLoadingPost(true);
     try {
       var d = new Date(Date.now());
       console.log("date:", d.toString());
-      const docRef = await addDoc(collection(db, "entries"), {
-        title: title,
-        user: user.uid,
-        content: content,
-        date: d,
-      });
+      const docRef = await addDoc(
+        collection(db, "users", user.uid, "entries"),
+        {
+          title: "New Entry",
+          // user: user.uid,
+          content: "",
+          date: d,
+        }
+      );
       console.log("Document written with ID: ", docRef.id);
       setIsLoadingPost(false);
     } catch (e) {
@@ -43,7 +46,10 @@ const Home = () => {
   useEffect(() => {
     let unsubscribe;
     try {
-      const q = query(collection(db, "entries"), orderBy("date", "desc"));
+      const q = query(
+        collection(db, "users", user.uid, "entries"),
+        orderBy("date", "desc")
+      );
       unsubscribe = onSnapshot(q, (querySnapshot) => {
         const newData = querySnapshot.docs.map((doc) => ({
           ...doc.data(),
@@ -58,47 +64,13 @@ const Home = () => {
     return () => unsubscribe();
   }, []);
 
-  const createEntry = () => {
-    if (user) {
-      return (
-        <div>
-          <div>Create entry</div>
-
-          <input
-            type="text"
-            placeholder="title"
-            on
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <br />
-          <input
-            type="text"
-            placeholder=" add content"
-            on
-            onChange={(e) => setContent(e.target.value)}
-          />
-
-          <div className="btn-container">
-            <button
-              type="submit"
-              className="btn"
-              onClick={addEntry}
-              disabled={loadingPost}
-            >
-              Submit
-            </button>
-          </div>
-        </div>
-      );
-    }
-    return <div />;
-  };
-
   return (
     <div>
-      <Nav />
+      {/* <Nav /> */}
       <h1> Acorn Blog</h1>
-      {createEntry()}
+      {/* {createEntry()} */}
+      <button onClick={createEntry}>New Entry</button>
+
       <div>
         {entries?.map((entry, i) => (
           <Entry key={i} entry={entry} />
@@ -113,7 +85,6 @@ const Entry = ({ entry }) => {
     <NavLink to={`/Entry/${entry.key}`}>
       <div className="Entry-container">
         <h2>{entry.title}</h2>
-        <h3>{entry.content}</h3>
       </div>
     </NavLink>
   );
