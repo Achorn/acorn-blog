@@ -2,9 +2,9 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { doc, query, onSnapshot } from "firebase/firestore";
-import { db } from "../firebase/config";
-import { useAuth } from "../context/AuthContext";
-import useFirestore from "../hooks/useFirestore";
+import { db } from "../../firebase/config";
+import { useAuth } from "../../context/AuthContext";
+import useFirestore from "../../hooks/useFirestore";
 import { useNavigate } from "react-router-dom";
 
 const Entry = () => {
