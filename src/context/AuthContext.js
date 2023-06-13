@@ -5,16 +5,16 @@ import {
   signOut,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState();
-  const [userLoading, setUserLoading] = useState(true);
-
+  const [fbhUser, loading] = useAuthState(auth);
+  console.log(fbhUser);
   useEffect(() => {
-    setUserLoading(true);
     const currUser = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
         setUser(authUser);
@@ -22,7 +22,6 @@ export const AuthProvider = ({ children }) => {
         setUser();
       }
     });
-    setUserLoading(false);
     return currUser;
   }, []);
 
@@ -43,7 +42,7 @@ export const AuthProvider = ({ children }) => {
   //delete account
 
   return (
-    <AuthContext.Provider value={{ user, userLoading, signUp, signIn, logOut }}>
+    <AuthContext.Provider value={{ user, loading, signUp, signIn, logOut }}>
       {children}
     </AuthContext.Provider>
   );

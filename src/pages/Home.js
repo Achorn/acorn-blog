@@ -5,11 +5,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import useFirestore from "../hooks/useFirestore";
 
 const Home = () => {
-  const { user, userLoading } = useAuth();
+  const { user } = useAuth();
 
-  if (userLoading) {
-    return <div>loading User...</div>;
-  }
   if (!user) {
     return <h1>Sign in to start Journaling!</h1>;
   }
@@ -55,7 +52,6 @@ const CreateEntryButton = ({ userId }) => {
   return (
     <div>
       <button onClick={createEntry} disabled={loadingPost}>
-        {" "}
         New Entry
       </button>
     </div>
