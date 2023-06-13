@@ -1,0 +1,33 @@
+.Entry-link {
+  text-decoration: none;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+a:visited {
+  text-decoration: none;
+  color: black;
+}
+a:hover {
+  text-decoration: none;
+  color: black;
+}
+a:focus {
+  text-decoration: none;
+  color: black;
+}
+a:hover,
+a:active {
+  text-decoration: none;
+  color: black;
+}
+
+.Entry-container {
+  width: 60vw;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  flex-direction: row;
+  text-decoration: none;
+}
