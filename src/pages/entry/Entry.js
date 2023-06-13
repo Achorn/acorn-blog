@@ -6,6 +6,7 @@ import { db } from "../../firebase/config";
 import { useAuth } from "../../context/AuthContext";
 import useFirestore from "../../hooks/useFirestore";
 import { useNavigate } from "react-router-dom";
+import "./Entry.css";
 
 const Entry = () => {
   const navigate = useNavigate();
@@ -58,6 +59,7 @@ const Entry = () => {
       setIsSavingPost(false);
     }
   };
+
   useEffect(() => {
     let unsubscribe = () => {};
     setIsLoadingPost(true);
@@ -87,45 +89,44 @@ const Entry = () => {
   } else if (JSON.stringify(post) === "{}") {
     return <div>no post here...</div>;
   } else {
-    if (user) {
-      return (
-        <div>
-          <input
-            type="text"
-            placeholder="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <br />
-          <textarea
-            type="text"
-            placeholder=" add content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
+    return (
+      <div>
+        <input
+          type="text"
+          className="Entry-title-editor"
+          placeholder="title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <br />
+        <textarea
+          type="text"
+          className="Entry-content-editor"
+          placeholder="Start Journaling"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+        />
 
-          <div className="btn-container">
-            <button
-              type="submit"
-              className="btn"
-              onClick={saveEntry}
-              disabled={savingPost}
-            >
-              Save
-            </button>
-          </div>
+        <div className="btn-container">
           <button
             type="submit"
             className="btn"
-            onClick={deleteEntry}
+            onClick={saveEntry}
             disabled={savingPost}
           >
-            Delete
+            Save
           </button>
         </div>
-      );
-    }
-    return <div />;
+        <button
+          type="submit"
+          className="btn"
+          onClick={deleteEntry}
+          disabled={savingPost}
+        >
+          Delete
+        </button>
+      </div>
+    );
   }
 };
 
