@@ -3,13 +3,28 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { NavLink, useNavigate } from "react-router-dom";
 import useFirestore from "../hooks/useFirestore";
-import { collection, addDoc } from "firebase/firestore";
-import { db } from "../firebase/config";
 
 const Home = () => {
   const { user, userLoading } = useAuth();
+
+  if (userLoading) {
+    return <div>loading User...</div>;
+  }
+  if (!user) {
+    return <h1>Sign in to start Journaling!</h1>;
+  }
+  return (
+    <div>
+      <h1> Your Entries </h1>
+      <CreateEntryButton userId={user.uid} />
+      <Entries userId={user.uid} />
+    </div>
+  );
+};
+
+const CreateEntryButton = ({ userId }) => {
   const navigate = useNavigate();
-  const [loadingPost, setIsLoadingPost] = useState(false);
+  const { createDoc } = useFirestore();
 
   const createEntry = async (e) => {
     console.log("triggered button");
@@ -18,38 +33,31 @@ const Home = () => {
     try {
       var d = new Date(Date.now());
       console.log("date:", d.toString());
-      const docRef = await addDoc(
-        collection(db, "users", user.uid, "entries"),
-        {
+      const docRef = await createDoc({
+        docRef: `users/${userId}/entries`,
+        docObject: {
           title: "New Entry",
           content: "",
           date: d,
-        }
-      );
+        },
+      });
       console.log("Document written with ID: ", docRef.id);
       setIsLoadingPost(false);
       navigate(`/entry/${docRef.id}`);
-      //redirect to post
     } catch (e) {
       console.error("Error adding document: ", e);
       setIsLoadingPost(false);
     }
   };
 
-  if (userLoading) {
-    return <div>loading User...</div>;
-  }
-  if (!user) {
-    return <h1>Sing in to start Journaling!</h1>;
-  }
+  const [loadingPost, setIsLoadingPost] = useState(false);
 
   return (
     <div>
-      <h1> Your Entries </h1>
       <button onClick={createEntry} disabled={loadingPost}>
+        {" "}
         New Entry
       </button>
-      <Entries userId={user.uid} />
     </div>
   );
 };

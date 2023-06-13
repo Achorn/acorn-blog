@@ -13,7 +13,6 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState();
   const [userLoading, setUserLoading] = useState(true);
 
-  //updates user when change state
   useEffect(() => {
     setUserLoading(true);
     const currUser = auth.onAuthStateChanged((authUser) => {

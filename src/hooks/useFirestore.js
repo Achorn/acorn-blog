@@ -1,4 +1,13 @@
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  onSnapshot,
+  orderBy,
+  query,
+  deleteDoc,
+  doc,
+  setDoc,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../firebase/config";
 
@@ -7,7 +16,6 @@ const useFirestore = (collectionName) => {
   const [docsLoading, setDocsLoading] = useState(true);
 
   useEffect(() => {
-    console.log("DB collection name: ", collectionName);
     let unsubscribe = () => {};
     const getData = async () => {
       try {
@@ -18,10 +26,6 @@ const useFirestore = (collectionName) => {
         unsubscribe = onSnapshot(q, (querySnapshot) => {
           const newDocs = [];
           querySnapshot.forEach((doc) => {
-            // console.log("Firestore Hook data: ", {
-            //   ...doc.data(),
-            //   key: doc.id,
-            // });
             newDocs.push({ ...doc.data(), key: doc.id });
           });
           setDocs(newDocs);
@@ -37,9 +41,17 @@ const useFirestore = (collectionName) => {
     return () => unsubscribe && unsubscribe();
   }, [collectionName]);
 
-  // getDocs()
+  function createDoc({ docRef, docObject }) {
+    return addDoc(collection(db, docRef), docObject);
+  }
+  function putDoc({ docRef, docObject }) {
+    return setDoc(doc(db, docRef), docObject);
+  }
+  const deleteDocument = ({ docPath, docKey }) => {
+    return deleteDoc(doc(db, docPath, docKey));
+  };
 
-  return { docs, docsLoading };
+  return { docs, docsLoading, createDoc, deleteDocument, putDoc };
 };
 
 export default useFirestore;

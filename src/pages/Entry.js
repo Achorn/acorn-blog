@@ -1,11 +1,14 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { doc, query, onSnapshot, setDoc } from "firebase/firestore";
+import { doc, query, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase/config";
 import { useAuth } from "../context/AuthContext";
+import useFirestore from "../hooks/useFirestore";
+import { useNavigate } from "react-router-dom";
 
 const Entry = () => {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const [post, setPost] = useState({});
   const [title, setTitle] = useState("");
@@ -13,18 +16,42 @@ const Entry = () => {
   const { id } = useParams();
   const [loadingPost, setIsLoadingPost] = useState(false);
   const [savingPost, setIsSavingPost] = useState(false);
+  const { deleteDocument, putDoc } = useFirestore();
 
   const saveEntry = async (e) => {
     console.log("triggered button");
     e.preventDefault();
     setIsSavingPost(true);
     try {
-      await setDoc(doc(db, "users", user.uid, "entries", id), {
-        title: title,
-        content: content,
-        date: post.date,
+      await putDoc({
+        docRef: `users/${user.uid}/entries/${id}`,
+        docObject: {
+          title: title,
+          content: content,
+          date: post.date,
+        },
       });
+
       console.log("Document saved");
+      setIsSavingPost(false);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+      setIsSavingPost(false);
+    }
+  };
+
+  const deleteEntry = async (e) => {
+    console.log("deleting entry...");
+    e.preventDefault();
+    setIsSavingPost(true);
+    try {
+      await deleteDocument({
+        docPath: `users/${user.uid}/entries`,
+        docKey: id,
+      });
+
+      console.log("Document deleted");
+      navigate(`/`);
       setIsSavingPost(false);
     } catch (e) {
       console.error("Error adding document: ", e);
@@ -91,6 +118,14 @@ const Entry = () => {
               Save
             </button>
           </div>
+          <button
+            type="submit"
+            className="btn"
+            onClick={deleteEntry}
+            disabled={savingPost}
+          >
+            Delete
+          </button>
         </div>
       );
     }
