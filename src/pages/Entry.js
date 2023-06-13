@@ -59,12 +59,8 @@ const Entry = () => {
     }
   };
   useEffect(() => {
-    if (!user || !user.uid) return;
-    let unsubscribe;
-
-    console.log("UID????", user.uid);
+    let unsubscribe = () => {};
     setIsLoadingPost(true);
-
     try {
       let docRef = `users/${user.uid}/entries/${id}`;
       console.log("docRef: ", docRef);
