@@ -11,9 +11,11 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState();
+  const [userLoading, setUserLoading] = useState(true);
 
   //updates user when change state
   useEffect(() => {
+    setUserLoading(true);
     const currUser = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
         setUser(authUser);
@@ -21,6 +23,7 @@ export const AuthProvider = ({ children }) => {
         setUser();
       }
     });
+    setUserLoading(false);
     return currUser;
   }, []);
 
@@ -41,7 +44,7 @@ export const AuthProvider = ({ children }) => {
   //delete account
 
   return (
-    <AuthContext.Provider value={{ user, signUp, signIn, logOut }}>
+    <AuthContext.Provider value={{ user, userLoading, signUp, signIn, logOut }}>
       {children}
     </AuthContext.Provider>
   );

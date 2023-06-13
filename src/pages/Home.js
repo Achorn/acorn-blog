@@ -1,22 +1,15 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { NavLink, useNavigate } from "react-router-dom";
-import {
-  collection,
-  addDoc,
-  query,
-  onSnapshot,
-  orderBy,
-} from "firebase/firestore";
+import useFirestore from "../hooks/useFirestore";
+import { collection, addDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
 
 const Home = () => {
-  const { user } = useAuth();
+  const { user, userLoading } = useAuth();
   const navigate = useNavigate();
-  const [entries, setEntries] = useState([]);
   const [loadingPost, setIsLoadingPost] = useState(false);
-  const [loadingEntries, setIsLoadingEntries] = useState(false);
 
   const createEntry = async (e) => {
     console.log("triggered button");
@@ -43,51 +36,35 @@ const Home = () => {
     }
   };
 
-  useEffect(() => {
-    let unsubscribe;
-    console.log("in use effect");
-    if (!user || !user.uid) return;
-    setIsLoadingEntries(true);
-    try {
-      console.log("UID????", user?.uid);
-      const q = query(
-        collection(db, "users", user.uid, "entries"),
-        orderBy("date", "desc")
-      );
-      unsubscribe = onSnapshot(q, (querySnapshot) => {
-        const newData = querySnapshot.docs.map((doc) => ({
-          ...doc.data(),
-          key: doc.id,
-        }));
-
-        setEntries(newData);
-      });
-      setIsLoadingEntries(false);
-    } catch (error) {
-      console.log(error);
-      setIsLoadingEntries(false);
-    }
-    return () => unsubscribe();
-  }, [user]);
-
-  if (loadingEntries) {
-    return <div>loading Entries...</div>;
+  if (userLoading) {
+    return <div>loading User...</div>;
   }
   if (!user) {
     return <h1>Sing in to start Journaling!</h1>;
   }
+
   return (
     <div>
       <h1> Your Entries </h1>
       <button onClick={createEntry} disabled={loadingPost}>
         New Entry
       </button>
+      <Entries userId={user.uid} />
+    </div>
+  );
+};
 
-      <div>
-        {entries?.map((entry, i) => (
-          <Entry key={i} entry={entry} />
-        ))}
-      </div>
+const Entries = ({ userId }) => {
+  const { docs, isLoading } = useFirestore(`users/${userId}/entries`);
+
+  if (isLoading) {
+    return <div>loading Entries...</div>;
+  }
+  return (
+    <div>
+      {docs?.map((entry, i) => (
+        <Entry key={i} entry={entry} />
+      ))}
     </div>
   );
 };
