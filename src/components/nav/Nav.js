@@ -7,11 +7,12 @@ import { ReactComponent as AcornIcon } from "../../assets/icons/acorn.svg";
 const Nav = () => {
   return (
     <div className="Nav-container">
-      <NavLink to={`/`} className="Home-btn-container">
-        <AcornIcon className="Nav-icon" />
-        <h2 className="Home-btn-txt"> BLOG</h2>
-      </NavLink>
-
+      <div className="Home-btn-container">
+        <NavLink to={`/`} className="Home-btn-link">
+          <AcornIcon className="Nav-icon" />
+          <h2 className="Home-btn-txt"> BLOG</h2>
+        </NavLink>
+      </div>
       <Account />
     </div>
   );
@@ -36,8 +37,8 @@ const Account = () => {
   );
   if (user) {
     account = (
-      <div className="User-logout-container">
-        <div>{user.email}</div>
+      <div className="Acount-container">
+        <div className="Email">{user.email}</div>
         <button className="Logout-btn" onClick={handleLogout}>
           logout
         </button>
@@ -45,7 +46,7 @@ const Account = () => {
     );
   }
 
-  return <div className="Nav-bar">{account}</div>;
+  return <div className="Acount-container">{account}</div>;
 };
 
 export default Nav;

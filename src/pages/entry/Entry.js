@@ -110,6 +110,7 @@ const Entry = () => {
         />
         <br />
         <textarea
+          oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
           type="text"
           className="Entry-content-editor"
           placeholder="Start Journaling"

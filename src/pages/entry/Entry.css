@@ -6,7 +6,7 @@
   /* display: flex; */
   /* align-items: center; */
   /* justify-content: center; */
-  width: 35vw;
+  width: 100vw;
   /* text-align: right; */
   letter-spacing: 0.39px;
   font-size: 30px;
@@ -31,6 +31,7 @@
   text-align: left;
   /* width: 35vw; */
   text-transform: none;
-  width: 60vw; /* background-color: pink; */
+  width: 60vw;
+  /* background-color: pink; */
   padding: 15px;
 }
