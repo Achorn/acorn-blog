@@ -68,7 +68,9 @@ const Entries = ({ userId }) => {
   return (
     <div>
       {docs?.map((entry, i) => (
-        <Entry key={i} entry={entry} />
+        <div>
+          <Entry key={i} entry={entry} />
+        </div>
       ))}
     </div>
   );
@@ -78,8 +80,11 @@ const Entry = ({ entry }) => {
   return (
     <NavLink className="Entry-link" to={`/Entry/${entry.key}`}>
       <div className="Entry-container">
-        <h3>{entry.title}</h3>
-        <h4>{entry.date.toDate().toLocaleDateString()}</h4>
+        <h3 className="Entry-title">{entry.title}</h3>
+        {" - "}
+        <h4 className="Entry-date">
+          {entry.date.toDate().toLocaleDateString()}
+        </h4>
       </div>
     </NavLink>
   );

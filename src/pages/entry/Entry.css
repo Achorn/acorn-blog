@@ -18,10 +18,10 @@
 }
 
 .Entry-content-editor {
-  min-height: 60vh;
+  resize: none;
+  min-height: 100vh;
   border: 0px solid;
   outline: none;
-  /* background-color: rgb(240, 240, 240); */
   /* letter-spacing: 10px; */
   font-family: "futura-pt", sans-serif;
   font-size: 22px;
@@ -30,8 +30,19 @@
   line-height: 25px;
   text-align: left;
   /* width: 35vw; */
+
+  max-width: 800px;
   text-transform: none;
-  width: 60vw;
+  width: 70vw;
   /* background-color: pink; */
   padding: 15px;
+  border-bottom: 1px solid #ededed;
+}
+
+/* smaller screens */
+
+@media only screen and (max-width: 800px) {
+  .Entry-content-editor {
+    width: 95vw;
+  }
 }

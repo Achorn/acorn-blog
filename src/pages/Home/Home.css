@@ -25,9 +25,20 @@ a:active {
 
 .Entry-container {
   width: 60vw;
+  padding: 3px;
   display: flex;
   align-items: center;
   justify-content: left;
   flex-direction: row;
   text-decoration: none;
+}
+
+.Entry-title {
+  margin: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.Entry-date {
+  margin: 10px;
 }
