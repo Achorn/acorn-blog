@@ -1,8 +1,9 @@
 import React from "react";
 import { useState } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { NavLink, useNavigate } from "react-router-dom";
-import useFirestore from "../hooks/useFirestore";
+import useFirestore from "../../hooks/useFirestore";
+import "./Home.css";
 
 const Home = () => {
   const { user } = useAuth();
@@ -75,10 +76,10 @@ const Entries = ({ userId }) => {
 
 const Entry = ({ entry }) => {
   return (
-    <NavLink to={`/Entry/${entry.key}`}>
+    <NavLink className="Entry-link" to={`/Entry/${entry.key}`}>
       <div className="Entry-container">
-        <h2>{entry.title}</h2>
-        <h4>{entry.date.toDate().toString()}</h4>
+        <h3>{entry.title}</h3>
+        <h4>{entry.date.toDate().toLocaleDateString()}</h4>
       </div>
     </NavLink>
   );

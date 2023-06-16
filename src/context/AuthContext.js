@@ -12,8 +12,8 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState();
-  const [fbhUser, loading] = useAuthState(auth);
-  console.log(fbhUser);
+  const [, loading] = useAuthState(auth);
+
   useEffect(() => {
     const currUser = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
