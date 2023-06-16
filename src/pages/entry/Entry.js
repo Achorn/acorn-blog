@@ -11,34 +11,43 @@ import "./Entry.css";
 const Entry = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const [post, setPost] = useState({});
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
   const { id } = useParams();
+  const [post, setPost] = useState({});
+
   const [loadingPost, setIsLoadingPost] = useState(false);
   const [savingPost, setIsSavingPost] = useState(false);
+  const [timeoutId, setTimeoutId] = useState();
   const { deleteDocument, putDoc } = useFirestore();
 
-  const saveEntry = async (e) => {
-    console.log("triggered button");
-    e.preventDefault();
+  const handleUpdatePost = (newPost) => {
+    setPost(newPost);
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    setTimeoutId(
+      setTimeout(() => {
+        console.log("timeout Triggered");
+        saveEntry();
+      }, 4000)
+    );
+  };
+
+  const saveEntry = async () => {
     setIsSavingPost(true);
     try {
+      console.log("title: ", post.title);
       await putDoc({
         docRef: `users/${user.uid}/entries/${id}`,
         docObject: {
-          title: title,
-          content: content,
+          title: post.title,
+          content: post.content,
           date: post.date,
         },
       });
-
-      console.log("Document saved");
-      setIsSavingPost(false);
     } catch (e) {
       console.error("Error adding document: ", e);
-      setIsSavingPost(false);
     }
+    setIsSavingPost(false);
   };
 
   const deleteEntry = async (e) => {
@@ -65,7 +74,6 @@ const Entry = () => {
     setIsLoadingPost(true);
     try {
       let docRef = `users/${user.uid}/entries/${id}`;
-      console.log("docRef: ", docRef);
       const q = query(doc(db, docRef));
       unsubscribe = onSnapshot(q, (doc) => {
         let newData = {};
@@ -73,8 +81,6 @@ const Entry = () => {
           ...doc.data(),
         };
         setPost(newData);
-        setTitle(newData.title);
-        setContent(newData.content);
         setIsLoadingPost(false);
       });
     } catch (error) {
@@ -95,36 +101,29 @@ const Entry = () => {
           type="text"
           className="Entry-title-editor"
           placeholder="title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          defaultValue={post.title}
+          onChange={(e) => {
+            let updatedPost = { ...post };
+            updatedPost.title = e.target.value;
+            handleUpdatePost(updatedPost);
+          }}
         />
         <br />
         <textarea
           type="text"
           className="Entry-content-editor"
           placeholder="Start Journaling"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
+          defaultValue={post.content}
+          onChange={(e) => {
+            let updatedPost = { ...post };
+            updatedPost.content = e.target.value;
+            handleUpdatePost(updatedPost);
+          }}
         />
-
-        <div className="btn-container">
-          <button
-            type="submit"
-            className="btn"
-            onClick={saveEntry}
-            disabled={savingPost}
-          >
-            Save
-          </button>
+        <div>
+          <button onClick={deleteEntry}>delete</button>
         </div>
-        <button
-          type="submit"
-          className="btn"
-          onClick={deleteEntry}
-          disabled={savingPost}
-        >
-          Delete
-        </button>
+        <div>{savingPost ? "saving..." : ""}</div>
       </div>
     );
   }
