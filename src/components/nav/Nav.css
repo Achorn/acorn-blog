@@ -1,14 +1,54 @@
-.Nav-bar {
+.Nav-container {
+  /* background-color: yellow; */
+  /* padding: 15px; */
   display: flex;
-  flex-direction: row;
   align-items: center;
-  justify-content: space-between;
-  padding-left: 10px;
-  padding-right: 10px;
+  flex-direction: row;
+  /* justify-content: space-between; */
+  width: 100vw;
+  /* border-bottom: 1px solid black; */
 }
-.User-logout-container {
+.Home-btn-container {
+  /* background-color: orange; */
+  padding-right: 10px;
+  margin-left: 10px;
+}
+.Home-btn-link {
+  /* float: left; */
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  text-decoration: none;
+}
+.Nav-icon {
+  padding: 10px;
+  height: 35px;
+  width: auto;
+  /* fill: black; */
+}
+
+.Acount-container {
+  margin-right: 5px;
+  flex-grow: 1;
+  width: 100%;
+  /* background-color: red; */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: end;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.Email {
+  flex-grow: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+  /* background-color: pink; */
+  text-overflow: ellipsis;
+  text-align: end;
+}
+.Logout-btn {
+  margin: 15px;
 }

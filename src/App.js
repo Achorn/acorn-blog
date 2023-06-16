@@ -37,6 +37,7 @@ function App() {
             <Route path={"entry/:id"} element={<Entry />} />
           </Routes>
         </UserLoading>
+        <Footer />
       </AuthProvider>
     </div>
   );
@@ -49,6 +50,10 @@ const UserLoading = ({ children }) => {
   }
 
   return <div>{children}</div>;
+};
+
+const Footer = () => {
+  return <div className="Footer"></div>;
 };
 
 export default App;

@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { doc, query, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import { useAuth } from "../../context/AuthContext";
@@ -120,6 +120,7 @@ const Entry = () => {
             handleUpdatePost(updatedPost);
           }}
         />
+        {/* <AutoResizeTextArea defValue={post.content} placeholder="hello" /> */}
         <div>
           <button onClick={deleteEntry}>delete</button>
         </div>
@@ -130,3 +131,37 @@ const Entry = () => {
 };
 
 export default Entry;
+
+// function AutoResizeTextArea({ defValue, placeholder }) {
+//   const [value, setValue] = useState("");
+//   const textAreaRef = useRef();
+
+//   useAutosizeTextArea(textAreaRef.current, value);
+
+//   const handleChange = (evt) => {
+//     const val = evt.target?.value;
+//     setValue(val);
+//   };
+
+//   return (
+//     <textarea
+//       className="Text-area-tester"
+//       id="review-text"
+//       onChange={handleChange}
+//       placeholder={placeholder}
+//       defaultValue={value}
+//       ref={textAreaRef}
+//       rows={1}
+//     />
+//   );
+// }
+
+// const useAutosizeTextArea = (textAreaRef, value) => {
+//   useEffect(() => {
+//     if (textAreaRef) {
+//       textAreaRef.style.height = "0px";
+//       const scrollHeight = textAreaRef.scrollHeight;
+//       textAreaRef.style.height = scrollHeight + "px";
+//     }
+//   }, [textAreaRef, value]);
+// };
