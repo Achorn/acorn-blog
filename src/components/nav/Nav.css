@@ -1,14 +1,43 @@
-.Nav-bar {
+.Nav-container {
+  /* background-color: pink; */
+  padding-left: 30px;
+  padding-right: 30px;
+  /* padding: 15px; */
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   padding-left: 10px;
   padding-right: 10px;
+  /* border-bottom: 1px solid black; */
 }
+
+.Home-btn-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-decoration: none;
+  /* justify-content: space-between; */
+}
+.Nav-icon {
+  padding: 10px;
+  /* margin-top: 20px; */
+  /* margin-bottom: 20px; */
+  /* fill: #bbbbbb; */
+  height: 35px;
+
+  /* min-height: 40px; */
+  width: auto;
+  /* fill: black; */
+}
+
 .User-logout-container {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
+}
+
+.Logout-btn {
+  margin: 15px;
 }
