@@ -1,25 +1,62 @@
+.Entr-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+.Entr-width {
+  max-width: 800px;
+  width: 70vw;
+}
+.Title-with-dropdown {
+  /* background-color: black; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  width: 100%;
+  box-sizing: border-box;
+}
+.Drop-btn {
+  /* position: relative; */
+
+  opacity: 0.5;
+  position: relative;
+}
+
 .Entry-title-editor {
+  box-sizing: border-box;
+
+  resize: none;
   font-family: "futura-pt", sans-serif;
   font-weight: 500;
   /* color: var(--primary_color); */
+  /* background-color: pink; */
   line-height: 2pxvw;
   /* display: flex; */
   /* align-items: center; */
   /* justify-content: center; */
-  width: 100vw;
   /* text-align: right; */
   letter-spacing: 0.39px;
   font-size: 30px;
   outline: none;
-  width: 80vw;
+  width: 100%;
+
   text-align: center;
   border: 0px solid;
   padding: 20px;
+  text-align: justify;
+  -moz-text-align-last: center; /* Firefox 12+ */
+  text-align-last: center;
 }
 
 .Entry-content-editor {
+  box-sizing: border-box;
+
+  width: 100%;
+  /* background-color: red; */
   resize: none;
-  min-height: 100vh;
+  min-height: 70vh;
   border: 0px solid;
   outline: none;
   /* letter-spacing: 10px; */
@@ -29,11 +66,8 @@
   font-weight: 500;
   line-height: 25px;
   text-align: left;
-  /* width: 35vw; */
 
-  max-width: 800px;
   text-transform: none;
-  width: 70vw;
   /* background-color: pink; */
   padding: 15px;
   border-bottom: 1px solid #ededed;
@@ -42,7 +76,7 @@
 /* smaller screens */
 
 @media only screen and (max-width: 800px) {
-  .Entry-content-editor {
+  .Entr-width {
     width: 95vw;
   }
 }

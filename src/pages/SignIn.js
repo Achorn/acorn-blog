@@ -49,10 +49,9 @@ function SignIn() {
       </form>
       <p>{err}</p>
       <p>
-        {" "}
         Don't have an account?{" "}
         <NavLink to={"/signup"} end>
-          Sing up!
+          Sign up!
         </NavLink>
       </p>
     </div>

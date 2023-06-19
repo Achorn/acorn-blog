@@ -37,7 +37,7 @@ function App() {
             <Route path={"entry/:id"} element={<Entry />} />
           </Routes>
         </UserLoading>
-        <Footer />
+        {/* <Footer /> */}
       </AuthProvider>
     </div>
   );

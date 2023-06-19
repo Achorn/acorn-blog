@@ -6,6 +6,8 @@ import { db } from "../../firebase/config";
 import { useAuth } from "../../context/AuthContext";
 import useFirestore from "../../hooks/useFirestore";
 import { useNavigate } from "react-router-dom";
+import DropDown from "../../components/dropdown/DropDown";
+import { FiTrash } from "react-icons/fi";
 import "./Entry.css";
 
 const Entry = () => {
@@ -20,6 +22,7 @@ const Entry = () => {
   const { deleteDocument, putDoc } = useFirestore();
 
   const handleUpdatePost = (newPost) => {
+    console.log("setting new post; ", newPost.title);
     setPost(newPost);
     if (timeoutId) {
       clearTimeout(timeoutId);
@@ -27,21 +30,22 @@ const Entry = () => {
     setTimeoutId(
       setTimeout(() => {
         console.log("timeout Triggered");
-        saveEntry();
+        saveEntry(newPost);
       }, 4000)
     );
   };
 
-  const saveEntry = async () => {
+  const saveEntry = async (newPost) => {
     setIsSavingPost(true);
     try {
-      console.log("title: ", post.title);
+      console.log("title: ", newPost);
+
       await putDoc({
         docRef: `users/${user.uid}/entries/${id}`,
         docObject: {
-          title: post.title,
-          content: post.content,
-          date: post.date,
+          title: newPost.title,
+          content: newPost.content,
+          date: newPost.date,
         },
       });
     } catch (e) {
@@ -96,35 +100,44 @@ const Entry = () => {
     return <div>no post here...</div>;
   } else {
     return (
-      <div>
-        <input
-          type="text"
-          className="Entry-title-editor"
-          placeholder="title"
-          defaultValue={post.title}
-          onChange={(e) => {
-            let updatedPost = { ...post };
-            updatedPost.title = e.target.value;
-            handleUpdatePost(updatedPost);
-          }}
-        />
-        <br />
-        <textarea
-          type="text"
-          className="Entry-content-editor"
-          placeholder="Start Journaling"
-          defaultValue={post.content}
-          onChange={(e) => {
-            let updatedPost = { ...post };
-            updatedPost.content = e.target.value;
-            handleUpdatePost(updatedPost);
-          }}
-        />
-        {/* <AutoResizeTextArea defValue={post.content} placeholder="hello" /> */}
-        <div>
-          <button onClick={deleteEntry}>delete</button>
+      <div className="Entr-container">
+        <div className="Entr-width">
+          <div className="Title-with-dropdown">
+            <input
+              maxLength={50}
+              type="text"
+              className="Entry-title-editor"
+              placeholder="title"
+              defaultValue={post.title}
+              onChange={(e) => {
+                let updatedPost = { ...post };
+                updatedPost.title = e.target.value;
+                handleUpdatePost(updatedPost);
+              }}
+            />
+          </div>
+          <textarea
+            type="text"
+            className="Entry-content-editor"
+            placeholder="Start Journaling"
+            defaultValue={post.content}
+            onChange={(e) => {
+              let updatedPost = { ...post };
+              updatedPost.content = e.target.value;
+              handleUpdatePost(updatedPost);
+            }}
+          />
+          {/* <AutoResizeTextArea defValue={post.content} placeholder="hello" /> */}
+          <div>
+            {/* <button onClick={deleteEntry}>delete</button> */}
+            <DropDown className="Drop-btn">
+              <FiTrash size="25" color="darkred" onClick={deleteEntry}>
+                trash
+              </FiTrash>
+            </DropDown>
+          </div>
+          <div>{savingPost ? "saving..." : ""}</div>
         </div>
-        <div>{savingPost ? "saving..." : ""}</div>
       </div>
     );
   }

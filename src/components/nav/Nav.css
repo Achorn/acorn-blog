@@ -15,11 +15,20 @@
 }
 .Home-btn-link {
   /* float: left; */
+  color: black;
   display: flex;
   flex-direction: row;
   align-items: center;
   text-decoration: none;
 }
+.Home-btn-link:link {
+  color: black;
+}
+
+.Home-btn-link:visited {
+  color: black;
+}
+
 .Nav-icon {
   padding: 10px;
   height: 35px;
