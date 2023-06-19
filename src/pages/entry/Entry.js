@@ -131,7 +131,7 @@ const Entry = () => {
           <div>
             {/* <button onClick={deleteEntry}>delete</button> */}
             <DropDown className="Drop-btn">
-              <FiTrash size="25" color="red" onClick={deleteEntry}>
+              <FiTrash size="25" color="darkred" onClick={deleteEntry}>
                 trash
               </FiTrash>
             </DropDown>

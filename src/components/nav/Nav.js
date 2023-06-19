@@ -31,7 +31,7 @@ const Account = () => {
       });
   };
   let account = (
-    <div>
+    <div className="Logout-btn">
       <NavLink to={`/signin`}> sign In </NavLink>
     </div>
   );
