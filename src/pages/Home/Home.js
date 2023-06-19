@@ -9,7 +9,13 @@ const Home = () => {
   const { user } = useAuth();
 
   if (!user) {
-    return <h1>Sign in to start Journaling!</h1>;
+    return (
+      <div>
+        <h1> Welcome to Acorn Blog!</h1>
+        <h1>A no thrills journalling app to write down your thoughts.</h1>
+        <h1>Sign in to get started</h1>
+      </div>
+    );
   }
   return (
     <div>
