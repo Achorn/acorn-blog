@@ -1,70 +1,36 @@
-# Getting Started with Create React App
+# Acorn Blog
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[Link to Blog](http://joshuaachorn.com/acorn-blog)
 
-## Available Scripts
+## Motivation
 
-In the project directory, you can run:
+I like to write a daily journal entry with my morning coffee to organize my thoughts or just spit out my stream of consciousness, either in my notebook or using Notion on my ipad.
 
-### `npm start`
+## Why this project was built
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+I like the idea of creating blog posts that originated from journal entries. It’s a bit vulnerable to post about your raw feelings online and this seems like a fun project to test that out. So you can either use it as a private journal or you can publish entries for public viewing.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Problems this project solves
 
-### `npm test`
+There are already online journaling apps online but I wanted something that was more tailored to my stylistic preferences and needs. I like the idea of a journaling app without too many bells and whistles. An app just for writing out your thoughts and feelings. Something as close to a physical journal as possible where you can whip it out and start typing. And if you want, you can publish an entry for public viewing. But not if you don’t want to.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## What I learned
 
-### `npm run build`
+Besides building this project because I wanted to. I also used this as a React/JS refresher as I've been using Flutter/Dart professionally for the past 3 years.
+I also wanted to mess around with firebases user auth securety and datase.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Something I learned with art is to not focus on the details too early on. Stay high level and fit big picture items in place before adding detail. that is always a challenge with me because I love styling and making things look good, so it was nice working on important features before putting the 'makeup' on.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### React
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+learning more about ...
 
-### `npm run eject`
+- provider package
+- react router for multiple pages
+- react useParams()
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Firebase
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Auth for signin signing out and accessing users data while logged in
+- firebase security to protect users data
+- firestore storage for adding editing and deleting journal entries
