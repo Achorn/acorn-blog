@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/acorn-blog/static/css/main.fad40bd9.css",
-    "main.js": "/acorn-blog/static/js/main.8245f534.js",
+    "main.js": "/acorn-blog/static/js/main.480815b1.js",
     "static/js/787.ec2499bf.chunk.js": "/acorn-blog/static/js/787.ec2499bf.chunk.js",
     "static/media/acorn.svg": "/acorn-blog/static/media/acorn.c7d7aef178b696248a7e871812d43c2f.svg",
     "index.html": "/acorn-blog/index.html",
     "main.fad40bd9.css.map": "/acorn-blog/static/css/main.fad40bd9.css.map",
-    "main.8245f534.js.map": "/acorn-blog/static/js/main.8245f534.js.map",
+    "main.480815b1.js.map": "/acorn-blog/static/js/main.480815b1.js.map",
     "787.ec2499bf.chunk.js.map": "/acorn-blog/static/js/787.ec2499bf.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.fad40bd9.css",
-    "static/js/main.8245f534.js"
+    "static/js/main.480815b1.js"
   ]
 }
