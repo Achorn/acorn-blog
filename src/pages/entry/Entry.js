@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { doc, query, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import { useAuth } from "../../context/AuthContext";
@@ -20,7 +20,7 @@ const Entry = () => {
   const [savingPost, setIsSavingPost] = useState(false);
   const [timeoutId, setTimeoutId] = useState();
   const { deleteDocument, putDoc } = useFirestore();
-
+  const [error, setError] = useState();
   const handleUpdatePost = (newPost) => {
     console.log("setting new post; ", newPost.title);
     setPost(newPost);
@@ -41,11 +41,13 @@ const Entry = () => {
       console.log("title: ", newPost);
 
       await putDoc({
-        docRef: `users/${user.uid}/entries/${id}`,
+        docRef: `/entries/${id}`,
         docObject: {
           title: newPost.title,
           content: newPost.content,
-          date: newPost.date,
+          created: newPost.created,
+          user: user.uid, //TODO: remove later
+          published: false, //TODO: remove later
         },
       });
     } catch (e) {
@@ -60,7 +62,7 @@ const Entry = () => {
     setIsSavingPost(true);
     try {
       await deleteDocument({
-        docPath: `users/${user.uid}/entries`,
+        docPath: `/entries`,
         docKey: id,
       });
 
@@ -77,7 +79,7 @@ const Entry = () => {
     let unsubscribe = () => {};
     setIsLoadingPost(true);
     try {
-      let docRef = `users/${user.uid}/entries/${id}`;
+      let docRef = `/entries/${id}`;
       const q = query(doc(db, docRef));
       unsubscribe = onSnapshot(q, (doc) => {
         let newData = {};
@@ -86,17 +88,19 @@ const Entry = () => {
         };
         setPost(newData);
         setIsLoadingPost(false);
+        setError();
       });
     } catch (error) {
       console.log(error);
       setIsLoadingPost(false);
+      setError(error);
     }
     return () => unsubscribe();
   }, [id, user]);
 
   if (loadingPost) {
     return <div>Loading...</div>;
-  } else if (JSON.stringify(post) === "{}") {
+  } else if (JSON.stringify(post) === "{}" || error) {
     return <div>no post here...</div>;
   } else {
     return (

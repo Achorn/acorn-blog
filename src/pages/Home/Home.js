@@ -1,9 +1,18 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { NavLink, useNavigate } from "react-router-dom";
 import useFirestore from "../../hooks/useFirestore";
 import "./Home.css";
+
+import {
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
+import { db } from "../../firebase/config";
 
 const Home = () => {
   const { user } = useAuth();
@@ -38,11 +47,12 @@ const CreateEntryButton = ({ userId }) => {
       var d = new Date(Date.now());
       console.log("date:", d.toString());
       const docRef = await createDoc({
-        docRef: `users/${userId}/entries`,
+        docRef: `/entries`,
         docObject: {
-          title: "New Entry",
+          title: "",
           content: "",
-          date: d,
+          created: d,
+          user: userId,
         },
       });
       console.log("Document written with ID: ", docRef.id);
@@ -66,11 +76,50 @@ const CreateEntryButton = ({ userId }) => {
 };
 
 const Entries = ({ userId }) => {
-  const { docs, isLoading } = useFirestore(`users/${userId}/entries`);
+  // const { docs, isLoading } = useFirestore(`users/${userId}/entries`);
+
+  const [docs, setDocs] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  const [err, setErr] = useState();
+  useEffect(() => {
+    let unsubscribe = () => {};
+    const getData = async () => {
+      const q = query(
+        collection(db, "entries"),
+        where("user", "==", userId),
+        orderBy("created", "desc")
+      );
+      console.log(q);
+      unsubscribe = onSnapshot(
+        q,
+        (querySnapshot) => {
+          const newDocs = [];
+          querySnapshot.forEach((doc) => {
+            newDocs.push({ ...doc.data(), key: doc.id });
+          });
+          setDocs(newDocs);
+          setIsLoading(false);
+          setErr();
+        },
+        (error) => {
+          console.log("ERORORORORRR: ", error.message);
+          setErr(error.message);
+          setIsLoading(false);
+        }
+      );
+    };
+
+    getData();
+    return () => unsubscribe && unsubscribe();
+  }, [userId]);
 
   if (isLoading) {
     return <div>loading Entries...</div>;
   }
+  if (err) {
+    return <div>{err}</div>;
+  }
+
   return (
     <div>
       {docs?.map((entry, i) => (
@@ -89,7 +138,7 @@ const Entry = ({ entry }) => {
         <h3 className="Entry-title">{entry.title}</h3>
         {" - "}
         <h4 className="Entry-date">
-          {entry.date.toDate().toLocaleDateString()}
+          {entry.created.toDate().toLocaleDateString()}
         </h4>
       </div>
     </NavLink>
