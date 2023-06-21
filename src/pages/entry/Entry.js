@@ -6,9 +6,18 @@ import { db } from "../../firebase/config";
 import { useAuth } from "../../context/AuthContext";
 import useFirestore from "../../hooks/useFirestore";
 import { useNavigate } from "react-router-dom";
-import DropDown from "../../components/dropdown/DropDown";
-import { FiTrash } from "react-icons/fi";
 import "./Entry.css";
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import { IconButton } from "@mui/material";
+import { FiMoreHorizontal } from "react-icons/fi";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 const Entry = () => {
   const navigate = useNavigate();
@@ -58,7 +67,7 @@ const Entry = () => {
 
   const deleteEntry = async (e) => {
     console.log("deleting entry...");
-    e.preventDefault();
+    // e.preventDefault();
     setIsSavingPost(true);
     try {
       await deleteDocument({
@@ -131,14 +140,10 @@ const Entry = () => {
               handleUpdatePost(updatedPost);
             }}
           />
-          {/* <AutoResizeTextArea defValue={post.content} placeholder="hello" /> */}
           <div>
-            {/* <button onClick={deleteEntry}>delete</button> */}
-            <DropDown className="Drop-btn">
-              <FiTrash size="25" color="darkred" onClick={deleteEntry}>
-                trash
-              </FiTrash>
-            </DropDown>
+            <CustomizedMenu>
+              <AlertDialog handleClick={deleteEntry} />
+            </CustomizedMenu>
           </div>
           <div>{savingPost ? "saving..." : ""}</div>
         </div>
@@ -147,38 +152,76 @@ const Entry = () => {
   }
 };
 
+const CustomizedMenu = ({ children }) => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  return (
+    <div>
+      <IconButton onClick={handleClick}>
+        <FiMoreHorizontal />
+      </IconButton>
+      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+        {children}
+      </Menu>
+    </div>
+  );
+};
+
+const AlertDialog = ({ handleClick }) => {
+  const [open, setOpen] = React.useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleConfirm = async () => {
+    setLoading(true);
+    const res = await handleClick();
+    console.log(res);
+    setLoading(false);
+    handleClose();
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <div>
+      <MenuItem disableRipple onClick={handleClickOpen}>
+        <DeleteOutlineIcon />
+        Delete
+      </MenuItem>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        // aria-labelledby="alert-dialog-title"
+        // aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Deleting Entry"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            are you sure you want to delete entry?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleConfirm} autoFocus disabled={loading}>
+            Delete
+          </Button>
+          <Button onClick={handleClose} disabled={loading}>
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+};
+
 export default Entry;
-
-// function AutoResizeTextArea({ defValue, placeholder }) {
-//   const [value, setValue] = useState("");
-//   const textAreaRef = useRef();
-
-//   useAutosizeTextArea(textAreaRef.current, value);
-
-//   const handleChange = (evt) => {
-//     const val = evt.target?.value;
-//     setValue(val);
-//   };
-
-//   return (
-//     <textarea
-//       className="Text-area-tester"
-//       id="review-text"
-//       onChange={handleChange}
-//       placeholder={placeholder}
-//       defaultValue={value}
-//       ref={textAreaRef}
-//       rows={1}
-//     />
-//   );
-// }
-
-// const useAutosizeTextArea = (textAreaRef, value) => {
-//   useEffect(() => {
-//     if (textAreaRef) {
-//       textAreaRef.style.height = "0px";
-//       const scrollHeight = textAreaRef.scrollHeight;
-//       textAreaRef.style.height = scrollHeight + "px";
-//     }
-//   }, [textAreaRef, value]);
-// };
