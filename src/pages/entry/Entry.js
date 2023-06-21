@@ -65,9 +65,8 @@ const Entry = () => {
     setIsSavingPost(false);
   };
 
-  const deleteEntry = async (e) => {
+  const deleteEntry = async () => {
     console.log("deleting entry...");
-    // e.preventDefault();
     setIsSavingPost(true);
     try {
       await deleteDocument({
@@ -182,9 +181,9 @@ const AlertDialog = ({ handleClick }) => {
     const res = await handleClick();
     console.log(res);
     setLoading(false);
+
     handleClose();
   };
-
   const handleClickOpen = () => {
     setOpen(true);
   };
