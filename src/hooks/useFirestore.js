@@ -16,6 +16,7 @@ const useFirestore = (collectionName) => {
   const [docsLoading, setDocsLoading] = useState(true);
 
   useEffect(() => {
+    if (!collectionName) return;
     let unsubscribe = () => {};
     const getData = async () => {
       try {
@@ -23,14 +24,20 @@ const useFirestore = (collectionName) => {
           collection(db, collectionName),
           orderBy("date", "desc")
         );
-        unsubscribe = onSnapshot(q, (querySnapshot) => {
-          const newDocs = [];
-          querySnapshot.forEach((doc) => {
-            newDocs.push({ ...doc.data(), key: doc.id });
-          });
-          setDocs(newDocs);
-          setDocsLoading(false);
-        });
+        unsubscribe = onSnapshot(
+          q,
+          (querySnapshot) => {
+            const newDocs = [];
+            querySnapshot.forEach((doc) => {
+              newDocs.push({ ...doc.data(), key: doc.id });
+            });
+            setDocs(newDocs);
+            setDocsLoading(false);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
       } catch (error) {
         console.log(error);
         setDocsLoading(false);
