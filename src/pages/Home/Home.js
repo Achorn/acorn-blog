@@ -40,12 +40,10 @@ const CreateEntryButton = ({ userId }) => {
   const { createDoc } = useFirestore();
 
   const createEntry = async (e) => {
-    console.log("triggered button");
     e.preventDefault();
     setIsLoadingPost(true);
     try {
       var d = new Date(Date.now());
-      console.log("date:", d.toString());
       const docRef = await createDoc({
         docRef: `/entries`,
         docObject: {
@@ -55,7 +53,6 @@ const CreateEntryButton = ({ userId }) => {
           user: userId,
         },
       });
-      console.log("Document written with ID: ", docRef.id);
       setIsLoadingPost(false);
       navigate(`/entry/${docRef.id}`);
     } catch (e) {
@@ -89,7 +86,6 @@ const Entries = ({ userId }) => {
         where("user", "==", userId),
         orderBy("created", "desc")
       );
-      console.log(q);
       unsubscribe = onSnapshot(
         q,
         (querySnapshot) => {
@@ -102,7 +98,6 @@ const Entries = ({ userId }) => {
           setErr();
         },
         (error) => {
-          console.log("ERORORORORRR: ", error.message);
           setErr(error.message);
           setIsLoading(false);
         }
@@ -123,9 +118,7 @@ const Entries = ({ userId }) => {
   return (
     <div>
       {docs?.map((entry, i) => (
-        <div>
-          <Entry key={i} entry={entry} />
-        </div>
+        <Entry key={i} entry={entry} />
       ))}
     </div>
   );
