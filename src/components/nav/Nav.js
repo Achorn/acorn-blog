@@ -3,7 +3,7 @@ import "./Nav.css";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { ReactComponent as AcornIcon } from "../../assets/icons/acorn.svg";
-
+import { CircularProgress } from "@mui/material";
 const Nav = () => {
   return (
     <div className="Nav-container">
@@ -19,7 +19,7 @@ const Nav = () => {
 };
 
 const Account = () => {
-  const { user, logOut } = useAuth();
+  const { user, logOut, loading } = useAuth();
 
   const handleLogout = async () => {
     await logOut()
@@ -35,6 +35,12 @@ const Account = () => {
       <NavLink to={`/signin`}> sign In </NavLink>
     </div>
   );
+  if (loading)
+    account = (
+      <div className="Logout-btn">
+        <CircularProgress size={30} thickness={4} />
+      </div>
+    );
   if (user) {
     account = (
       <div className="Acount-container">
