@@ -6,9 +6,18 @@ import { db } from "../../firebase/config";
 import { useAuth } from "../../context/AuthContext";
 import useFirestore from "../../hooks/useFirestore";
 import { useNavigate } from "react-router-dom";
-import DropDown from "../../components/dropdown/DropDown";
-import { FiTrash } from "react-icons/fi";
 import "./Entry.css";
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import { IconButton } from "@mui/material";
+import { FiMoreHorizontal } from "react-icons/fi";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 const Entry = () => {
   const navigate = useNavigate();
@@ -17,62 +26,56 @@ const Entry = () => {
   const [post, setPost] = useState({});
 
   const [loadingPost, setIsLoadingPost] = useState(false);
-  const [savingPost, setIsSavingPost] = useState(false);
+  const [updatingPost, setUpdatingPost] = useState(false);
   const [timeoutId, setTimeoutId] = useState();
   const { deleteDocument, putDoc } = useFirestore();
   const [error, setError] = useState();
+  const [savingError, setSavingError] = useState();
+
   const handleUpdatePost = (newPost) => {
-    console.log("setting new post; ", newPost.title);
     setPost(newPost);
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
     setTimeoutId(
       setTimeout(() => {
-        console.log("timeout Triggered");
         saveEntry(newPost);
       }, 4000)
     );
   };
 
   const saveEntry = async (newPost) => {
-    setIsSavingPost(true);
-    try {
-      console.log("title: ", newPost);
-
-      await putDoc({
-        docRef: `/entries/${id}`,
-        docObject: {
-          title: newPost.title,
-          content: newPost.content,
-          created: newPost.created,
-          user: user.uid, //TODO: remove later
-          published: false, //TODO: remove later
-        },
+    setUpdatingPost(true);
+    var d = new Date(Date.now());
+    newPost.lastUpdated = d;
+    await putDoc({
+      docRef: `/entries/${id}`,
+      docObject: newPost,
+    })
+      .then(() => {
+        setSavingError();
+      })
+      .catch((err) => {
+        setSavingError(err.message);
+      })
+      .finally(() => {
+        setUpdatingPost(false);
       });
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
-    setIsSavingPost(false);
   };
 
-  const deleteEntry = async (e) => {
-    console.log("deleting entry...");
-    e.preventDefault();
-    setIsSavingPost(true);
-    try {
-      await deleteDocument({
-        docPath: `/entries`,
-        docKey: id,
+  const deleteEntry = async () => {
+    setUpdatingPost(true);
+    return await deleteDocument({
+      docPath: `/entries`,
+      docKey: id,
+    })
+      .then(() => {
+        navigate(`/`);
+      })
+      .catch((err) => {})
+      .finally(() => {
+        setUpdatingPost(false);
       });
-
-      console.log("Document deleted");
-      navigate(`/`);
-      setIsSavingPost(false);
-    } catch (e) {
-      console.error("Error adding document: ", e);
-      setIsSavingPost(false);
-    }
   };
 
   useEffect(() => {
@@ -131,54 +134,92 @@ const Entry = () => {
               handleUpdatePost(updatedPost);
             }}
           />
-          {/* <AutoResizeTextArea defValue={post.content} placeholder="hello" /> */}
           <div>
-            {/* <button onClick={deleteEntry}>delete</button> */}
-            <DropDown className="Drop-btn">
-              <FiTrash size="25" color="darkred" onClick={deleteEntry}>
-                trash
-              </FiTrash>
-            </DropDown>
+            <CustomizedMenu>
+              <AlertDialog handleClick={deleteEntry} />
+            </CustomizedMenu>
           </div>
-          <div>{savingPost ? "saving..." : ""}</div>
+          <div>
+            {updatingPost
+              ? "saving..."
+              : savingError
+              ? "Error saving Entry"
+              : ""}
+          </div>
         </div>
       </div>
     );
   }
 };
 
+const CustomizedMenu = ({ children }) => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  return (
+    <div>
+      <IconButton onClick={handleClick}>
+        <FiMoreHorizontal />
+      </IconButton>
+      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+        {children}
+      </Menu>
+    </div>
+  );
+};
+
+const AlertDialog = ({ handleClick }) => {
+  const [open, setOpen] = React.useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleConfirm = async () => {
+    setLoading(true);
+    await handleClick();
+    setLoading(false);
+    handleClose();
+  };
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <div>
+      <MenuItem disableRipple onClick={handleClickOpen}>
+        <DeleteOutlineIcon />
+        Delete
+      </MenuItem>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        // aria-labelledby="alert-dialog-title"
+        // aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Deleting Entry"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            are you sure you want to delete entry?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleConfirm} autoFocus disabled={loading}>
+            Delete
+          </Button>
+          <Button onClick={handleClose} disabled={loading}>
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+};
+
 export default Entry;
-
-// function AutoResizeTextArea({ defValue, placeholder }) {
-//   const [value, setValue] = useState("");
-//   const textAreaRef = useRef();
-
-//   useAutosizeTextArea(textAreaRef.current, value);
-
-//   const handleChange = (evt) => {
-//     const val = evt.target?.value;
-//     setValue(val);
-//   };
-
-//   return (
-//     <textarea
-//       className="Text-area-tester"
-//       id="review-text"
-//       onChange={handleChange}
-//       placeholder={placeholder}
-//       defaultValue={value}
-//       ref={textAreaRef}
-//       rows={1}
-//     />
-//   );
-// }
-
-// const useAutosizeTextArea = (textAreaRef, value) => {
-//   useEffect(() => {
-//     if (textAreaRef) {
-//       textAreaRef.style.height = "0px";
-//       const scrollHeight = textAreaRef.scrollHeight;
-//       textAreaRef.style.height = scrollHeight + "px";
-//     }
-//   }, [textAreaRef, value]);
-// };
