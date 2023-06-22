@@ -18,19 +18,19 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { useSnackBar } from "../../context/SnackBarContext";
 
 const Entry = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { id } = useParams();
   const [post, setPost] = useState({});
+  const { setAlert } = useSnackBar();
 
   const [loadingPost, setIsLoadingPost] = useState(false);
-  const [updatingPost, setUpdatingPost] = useState(false);
   const [timeoutId, setTimeoutId] = useState();
   const { deleteDocument, putDoc } = useFirestore();
   const [error, setError] = useState();
-  const [savingError, setSavingError] = useState();
 
   const handleUpdatePost = (newPost) => {
     setPost(newPost);
@@ -45,7 +45,7 @@ const Entry = () => {
   };
 
   const saveEntry = async (newPost) => {
-    setUpdatingPost(true);
+    setAlert({ message: "saving" });
     var d = new Date(Date.now());
     newPost.lastUpdated = d;
     await putDoc({
@@ -53,38 +53,45 @@ const Entry = () => {
       docObject: newPost,
     })
       .then(() => {
-        setSavingError();
+        setAlert({ message: "saved", severity: "info" });
       })
       .catch((err) => {
-        setSavingError(err.message);
-      })
-      .finally(() => {
-        setUpdatingPost(false);
+        setAlert({
+          message: "Error saving: " + err.code,
+          severity: "error",
+          duration: 6000,
+        });
       });
   };
 
   const deleteEntry = async () => {
-    setUpdatingPost(true);
     return await deleteDocument({
       docPath: `/entries`,
       docKey: id,
     })
       .then(() => {
+        setAlert({ message: "Deleted Entry", severity: "info" });
+
         navigate(`/`);
       })
-      .catch((err) => {})
-      .finally(() => {
-        setUpdatingPost(false);
+      .catch((err) => {
+        setAlert({
+          message: "Error Deleting Entry: " + err.code,
+          severity: "error",
+          duration: 6000,
+        });
       });
   };
 
   useEffect(() => {
     let unsubscribe = () => {};
     setIsLoadingPost(true);
-    try {
-      let docRef = `/entries/${id}`;
-      const q = query(doc(db, docRef));
-      unsubscribe = onSnapshot(q, (doc) => {
+
+    let docRef = `/entries/${id}`;
+    const q = query(doc(db, docRef));
+    unsubscribe = onSnapshot(
+      q,
+      (doc) => {
         let newData = {};
         newData = {
           ...doc.data(),
@@ -92,12 +99,13 @@ const Entry = () => {
         setPost(newData);
         setIsLoadingPost(false);
         setError();
-      });
-    } catch (error) {
-      console.log(error);
-      setIsLoadingPost(false);
-      setError(error);
-    }
+      },
+      (error) => {
+        setIsLoadingPost(false);
+        setError(error);
+      }
+    );
+
     return () => unsubscribe();
   }, [id, user]);
 
@@ -114,7 +122,7 @@ const Entry = () => {
               maxLength={50}
               type="text"
               className="Entry-title-editor"
-              placeholder="title"
+              placeholder="New Title"
               defaultValue={post.title}
               onChange={(e) => {
                 let updatedPost = { ...post };
@@ -138,13 +146,6 @@ const Entry = () => {
             <CustomizedMenu>
               <AlertDialog handleClick={deleteEntry} />
             </CustomizedMenu>
-          </div>
-          <div>
-            {updatingPost
-              ? "saving..."
-              : savingError
-              ? "Error saving Entry"
-              : ""}
           </div>
         </div>
       </div>
