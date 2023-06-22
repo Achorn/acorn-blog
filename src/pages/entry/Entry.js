@@ -26,61 +26,56 @@ const Entry = () => {
   const [post, setPost] = useState({});
 
   const [loadingPost, setIsLoadingPost] = useState(false);
-  const [savingPost, setIsSavingPost] = useState(false);
+  const [updatingPost, setUpdatingPost] = useState(false);
   const [timeoutId, setTimeoutId] = useState();
   const { deleteDocument, putDoc } = useFirestore();
   const [error, setError] = useState();
+  const [savingError, setSavingError] = useState();
+
   const handleUpdatePost = (newPost) => {
-    console.log("setting new post; ", newPost.title);
     setPost(newPost);
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
     setTimeoutId(
       setTimeout(() => {
-        console.log("timeout Triggered");
         saveEntry(newPost);
       }, 4000)
     );
   };
 
   const saveEntry = async (newPost) => {
-    setIsSavingPost(true);
-    try {
-      console.log("title: ", newPost);
-
-      await putDoc({
-        docRef: `/entries/${id}`,
-        docObject: {
-          title: newPost.title,
-          content: newPost.content,
-          created: newPost.created,
-          user: user.uid, //TODO: remove later
-          published: false, //TODO: remove later
-        },
+    setUpdatingPost(true);
+    var d = new Date(Date.now());
+    newPost.lastUpdated = d;
+    await putDoc({
+      docRef: `/entries/${id}`,
+      docObject: newPost,
+    })
+      .then(() => {
+        setSavingError();
+      })
+      .catch((err) => {
+        setSavingError(err.message);
+      })
+      .finally(() => {
+        setUpdatingPost(false);
       });
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
-    setIsSavingPost(false);
   };
 
   const deleteEntry = async () => {
-    console.log("deleting entry...");
-    setIsSavingPost(true);
-    try {
-      await deleteDocument({
-        docPath: `/entries`,
-        docKey: id,
+    setUpdatingPost(true);
+    return await deleteDocument({
+      docPath: `/entries`,
+      docKey: id,
+    })
+      .then(() => {
+        navigate(`/`);
+      })
+      .catch((err) => {})
+      .finally(() => {
+        setUpdatingPost(false);
       });
-
-      console.log("Document deleted");
-      navigate(`/`);
-      setIsSavingPost(false);
-    } catch (e) {
-      console.error("Error adding document: ", e);
-      setIsSavingPost(false);
-    }
   };
 
   useEffect(() => {
@@ -144,7 +139,13 @@ const Entry = () => {
               <AlertDialog handleClick={deleteEntry} />
             </CustomizedMenu>
           </div>
-          <div>{savingPost ? "saving..." : ""}</div>
+          <div>
+            {updatingPost
+              ? "saving..."
+              : savingError
+              ? "Error saving Entry"
+              : ""}
+          </div>
         </div>
       </div>
     );
@@ -178,10 +179,8 @@ const AlertDialog = ({ handleClick }) => {
 
   const handleConfirm = async () => {
     setLoading(true);
-    const res = await handleClick();
-    console.log(res);
+    await handleClick();
     setLoading(false);
-
     handleClose();
   };
   const handleClickOpen = () => {

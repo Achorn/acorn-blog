@@ -20,7 +20,7 @@ const Home = () => {
   if (!user) {
     return (
       <div>
-        <h1> Welcome to Acorn Blog!</h1>
+        <h1>Welcome to Acorn Blog!</h1>
         <h1>A no thrills journalling app to write down your thoughts.</h1>
         <h1>Sign in to get started</h1>
       </div>
@@ -42,23 +42,27 @@ const CreateEntryButton = ({ userId }) => {
   const createEntry = async (e) => {
     e.preventDefault();
     setIsLoadingPost(true);
-    try {
-      var d = new Date(Date.now());
-      const docRef = await createDoc({
-        docRef: `/entries`,
-        docObject: {
-          title: "",
-          content: "",
-          created: d,
-          user: userId,
-        },
+    var d = new Date(Date.now());
+    await createDoc({
+      docRef: `/entries`,
+      docObject: {
+        title: "",
+        content: "",
+        created: d,
+        user: userId,
+        published: false,
+        lastUpdated: d,
+      },
+    })
+      .then((res) => {
+        navigate(`/entry/${res.id}`);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setIsLoadingPost(false);
       });
-      setIsLoadingPost(false);
-      navigate(`/entry/${docRef.id}`);
-    } catch (e) {
-      console.error("Error adding document: ", e);
-      setIsLoadingPost(false);
-    }
   };
 
   const [loadingPost, setIsLoadingPost] = useState(false);
@@ -73,11 +77,10 @@ const CreateEntryButton = ({ userId }) => {
 };
 
 const Entries = ({ userId }) => {
-  // const { docs, isLoading } = useFirestore(`users/${userId}/entries`);
-
   const [docs, setDocs] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [err, setErr] = useState();
+
   useEffect(() => {
     let unsubscribe = () => {};
     const getData = async () => {
@@ -128,7 +131,9 @@ const Entry = ({ entry }) => {
   return (
     <NavLink className="Entry-link" to={`/Entry/${entry.key}`}>
       <div className="Entry-container">
-        <h3 className="Entry-title">{entry.title}</h3>
+        <h3 className="Entry-title">
+          {entry.title ? entry.title : '"Empty Title..."'}
+        </h3>
         {" - "}
         <h4 className="Entry-date">
           {entry.created.toDate().toLocaleDateString()}
