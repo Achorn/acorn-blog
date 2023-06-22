@@ -10,7 +10,7 @@ import "./Entry.css";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { IconButton, duration } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { FiMoreHorizontal } from "react-icons/fi";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";

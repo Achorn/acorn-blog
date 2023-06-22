@@ -55,8 +55,8 @@ const UserLoading = ({ children }) => {
   return <div>{children}</div>;
 };
 
-const Footer = () => {
-  return <div className="Footer"></div>;
-};
+// const Footer = () => {
+//   return <div className="Footer"></div>;
+// };
 
 export default App;
