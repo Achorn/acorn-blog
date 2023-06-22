@@ -114,7 +114,7 @@ const Entry = () => {
               maxLength={50}
               type="text"
               className="Entry-title-editor"
-              placeholder="title"
+              placeholder="New Title"
               defaultValue={post.title}
               onChange={(e) => {
                 let updatedPost = { ...post };

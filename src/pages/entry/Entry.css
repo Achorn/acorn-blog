@@ -30,13 +30,8 @@
   resize: none;
   font-family: "futura-pt", sans-serif;
   font-weight: 500;
-  /* color: var(--primary_color); */
-  /* background-color: pink; */
   line-height: 2pxvw;
-  /* display: flex; */
-  /* align-items: center; */
-  /* justify-content: center; */
-  /* text-align: right; */
+
   letter-spacing: 0.39px;
   font-size: 30px;
   outline: none;
@@ -45,9 +40,6 @@
   text-align: center;
   border: 0px solid;
   padding: 20px;
-  text-align: justify;
-  -moz-text-align-last: center; /* Firefox 12+ */
-  text-align-last: center;
 }
 
 .Entry-content-editor {
