@@ -121,13 +121,13 @@ const Entries = ({ userId }) => {
   return (
     <div>
       {docs?.map((entry, i) => (
-        <Entry key={i} entry={entry} />
+        <EntryLink key={i} entry={entry} />
       ))}
     </div>
   );
 };
 
-const Entry = ({ entry }) => {
+const EntryLink = ({ entry }) => {
   return (
     <NavLink className="Entry-link" to={`/Entry/${entry.key}`}>
       <div className="Entry-container">
@@ -136,6 +136,7 @@ const Entry = ({ entry }) => {
         <h4 className="Entry-date">
           {entry.created.toDate().toLocaleDateString()}
         </h4>
+        <p style={{ color: "green" }}>{entry.published ? "Published" : ""}</p>{" "}
       </div>
     </NavLink>
   );

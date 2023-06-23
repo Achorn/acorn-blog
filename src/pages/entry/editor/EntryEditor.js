@@ -112,7 +112,9 @@ const EntryEditor = () => {
   if (loadingPost) {
     return <div>Loading...</div>;
   } else if (JSON.stringify(post) === "{}" || error) {
-    return <div>no post here...</div>;
+    return <div>nothing to edit</div>;
+  } else if (!user || user.uid !== post.user) {
+    return <div>You dont have edit permitions</div>;
   } else {
     return (
       <div className="Entr-container">
