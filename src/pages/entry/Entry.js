@@ -30,21 +30,8 @@ const Entry = () => {
   const { setAlert } = useSnackBar();
 
   const [loadingPost, setIsLoadingPost] = useState(false);
-  // const [timeoutId, setTimeoutId] = useState();
   const { deleteDocument, putDoc } = useFirestore();
   const [error, setError] = useState();
-
-  // const handleUpdatePost = (newPost) => {
-  //   setPost(newPost);
-  //   if (timeoutId) {
-  //     clearTimeout(timeoutId);
-  //   }
-  //   setTimeoutId(
-  //     setTimeout(() => {
-  //       saveEntry(newPost);
-  //     }, 4000)
-  //   );
-  // };
 
   const saveEntry = async (newPost) => {
     setAlert({ message: "saving" });
@@ -204,12 +191,7 @@ const AlertDialog = ({ handleClick }) => {
         <DeleteOutlineIcon />
         Delete
       </MenuItem>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        // aria-labelledby="alert-dialog-title"
-        // aria-describedby="alert-dialog-description"
-      >
+      <Dialog open={open} onClose={handleClose}>
         <DialogTitle id="alert-dialog-title">{"Deleting Entry"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
