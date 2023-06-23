@@ -28,8 +28,9 @@ function SignIn() {
       <p>Sign In</p>
       <form onSubmit={handleSubmit}>
         <label>
-          Email:
+          {/* Email: */}
           <input
+            placeholder="email"
             type="text"
             name="email"
             onChange={(e) => setEmail(e.target.value)}
@@ -37,8 +38,9 @@ function SignIn() {
         </label>
         <br />{" "}
         <label>
-          Password:
+          {/* Password: */}
           <input
+            placeholder="password"
             type="password"
             name="password"
             onChange={(e) => setPassword(e.target.value)}

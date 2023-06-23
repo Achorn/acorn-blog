@@ -4,10 +4,12 @@ import SignUp from "./pages/SignUp";
 import Entry from "./pages/entry/Entry";
 import Home from "./pages/Home/Home";
 import PublicRoute from "./routes/PublicRoute";
+import PrivateRoute from "./routes/PrivateRoute";
 import { Routes, Route } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Nav from "./components/nav/Nav";
 import { SnackBarProvider } from "./context/SnackBarContext";
+import EntryEditor from "./pages/entry/editor/EntryEditor";
 
 function App() {
   return (
@@ -37,6 +39,15 @@ function App() {
                 }
               />
               <Route path={"entry/:id"} element={<Entry />} />
+
+              <Route
+                path={"entry/:id/edit"}
+                element={
+                  <PrivateRoute>
+                    <EntryEditor />
+                  </PrivateRoute>
+                }
+              />
             </Routes>
           </UserLoading>
           {/* <Footer /> */}

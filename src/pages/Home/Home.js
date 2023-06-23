@@ -31,6 +31,7 @@ const Home = () => {
       <h1> Your Entries </h1>
       <CreateEntryButton userId={user.uid} />
       <Entries userId={user.uid} />
+      <div style={{ height: "100px" }}></div>
     </div>
   );
 };
@@ -55,7 +56,7 @@ const CreateEntryButton = ({ userId }) => {
       },
     })
       .then((res) => {
-        navigate(`/entry/${res.id}`);
+        navigate(`/entry/${res.id}/edit`);
       })
       .catch((err) => {
         console.log(err);
@@ -121,23 +122,22 @@ const Entries = ({ userId }) => {
   return (
     <div>
       {docs?.map((entry, i) => (
-        <Entry key={i} entry={entry} />
+        <EntryLink key={i} entry={entry} />
       ))}
     </div>
   );
 };
 
-const Entry = ({ entry }) => {
+const EntryLink = ({ entry }) => {
   return (
     <NavLink className="Entry-link" to={`/Entry/${entry.key}`}>
       <div className="Entry-container">
-        <h3 className="Entry-title">
-          {entry.title ? entry.title : '"Empty Title..."'}
-        </h3>
+        <h3 className="Entry-title">{entry.title ? entry.title : '" "'}</h3>
         {" - "}
         <h4 className="Entry-date">
           {entry.created.toDate().toLocaleDateString()}
         </h4>
+        <p style={{ color: "green" }}>{entry.published ? "Published" : ""}</p>{" "}
       </div>
     </NavLink>
   );

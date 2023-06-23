@@ -2,11 +2,11 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { doc, query, onSnapshot } from "firebase/firestore";
-import { db } from "../../firebase/config";
-import { useAuth } from "../../context/AuthContext";
-import useFirestore from "../../hooks/useFirestore";
+import { db } from "../../../firebase/config";
+import { useAuth } from "../../../context/AuthContext";
+import useFirestore from "../../../hooks/useFirestore";
 import { useNavigate } from "react-router-dom";
-import "./Entry.css";
+import "./EntryEditor.css";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -18,11 +18,11 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
-import { useSnackBar } from "../../context/SnackBarContext";
+import { useSnackBar } from "../../../context/SnackBarContext";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
+import CropPortraitOutlinedIcon from "@mui/icons-material/CropPortraitOutlined";
 
-const Entry = () => {
+const EntryEditor = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { id } = useParams();
@@ -30,8 +30,21 @@ const Entry = () => {
   const { setAlert } = useSnackBar();
 
   const [loadingPost, setIsLoadingPost] = useState(false);
+  const [timeoutId, setTimeoutId] = useState();
   const { deleteDocument, putDoc } = useFirestore();
   const [error, setError] = useState();
+
+  const handleUpdatePost = (newPost) => {
+    setPost(newPost);
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    setTimeoutId(
+      setTimeout(() => {
+        saveEntry(newPost);
+      }, 4000)
+    );
+  };
 
   const saveEntry = async (newPost) => {
     setAlert({ message: "saving" });
@@ -101,46 +114,58 @@ const Entry = () => {
   if (loadingPost) {
     return <div>Loading...</div>;
   } else if (JSON.stringify(post) === "{}" || error) {
-    return <div>no post here...</div>;
+    return <div>nothing to edit</div>;
+  } else if (!user || user.uid !== post.user) {
+    return <div>You dont have edit permitions</div>;
   } else {
     return (
       <div className="Entr-container">
         <div className="Entr-width">
           <div className="Title-with-dropdown">
-            <div className="Entry-title-editor">{post.title}</div>
+            <input
+              maxLength={50}
+              type="text"
+              className="Entry-title-editor"
+              placeholder="New Title"
+              defaultValue={post.title}
+              onChange={(e) => {
+                let updatedPost = { ...post };
+                updatedPost.title = e.target.value;
+                handleUpdatePost(updatedPost);
+              }}
+            />
           </div>
-          <div className="Entry-content-display">
-            <p>{post.content}</p>
-          </div>
-
+          <textarea
+            type="text"
+            className="Entry-content-editor"
+            placeholder="Start Journaling"
+            defaultValue={post.content}
+            onChange={(e) => {
+              let updatedPost = { ...post };
+              updatedPost.content = e.target.value;
+              handleUpdatePost(updatedPost);
+            }}
+          />
           <div>
-            {user ? (
-              <CustomizedMenu>
-                <AlertDialog handleClick={deleteEntry} />
-                <MenuItem
-                  disableRipple
-                  onClick={() => navigate(`/entry/${id}/edit`)}
-                >
-                  <CreateOutlinedIcon /> Edit
-                </MenuItem>
-                <MenuItem
-                  disableRipple
-                  onClick={() => {
-                    const newPost = { ...post };
-                    newPost.published = !newPost.published;
-                    saveEntry(newPost);
-                  }}
-                >
-                  <ArticleOutlinedIcon />{" "}
-                  {post.published ? "Un-publish" : "Publish"}
-                </MenuItem>
-              </CustomizedMenu>
-            ) : (
-              <div />
-            )}
+            <CustomizedMenu>
+              <AlertDialog handleClick={deleteEntry} />
+              <MenuItem disableRipple onClick={() => navigate(`/entry/${id}/`)}>
+                <CropPortraitOutlinedIcon /> View Entry
+              </MenuItem>
+              <MenuItem
+                disableRipple
+                onClick={() => {
+                  const newPost = { ...post };
+                  newPost.published = !newPost.published;
+                  saveEntry(newPost);
+                }}
+              >
+                <ArticleOutlinedIcon />{" "}
+                {post.published ? "Un-publish" : "Publish"}
+              </MenuItem>
+            </CustomizedMenu>
           </div>
         </div>
-        <div style={{ height: "100px" }}></div>
       </div>
     );
   }
@@ -191,7 +216,12 @@ const AlertDialog = ({ handleClick }) => {
         <DeleteOutlineIcon />
         Delete
       </MenuItem>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        // aria-labelledby="alert-dialog-title"
+        // aria-describedby="alert-dialog-description"
+      >
         <DialogTitle id="alert-dialog-title">{"Deleting Entry"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
@@ -211,4 +241,4 @@ const AlertDialog = ({ handleClick }) => {
   );
 };
 
-export default Entry;
+export default EntryEditor;
