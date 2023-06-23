@@ -19,6 +19,8 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useSnackBar } from "../../../context/SnackBarContext";
+import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
+import CropPortraitOutlinedIcon from "@mui/icons-material/CropPortraitOutlined";
 
 const EntryEditor = () => {
   const navigate = useNavigate();
@@ -147,6 +149,20 @@ const EntryEditor = () => {
           <div>
             <CustomizedMenu>
               <AlertDialog handleClick={deleteEntry} />
+              <MenuItem disableRipple onClick={() => navigate(`/entry/${id}/`)}>
+                <CropPortraitOutlinedIcon /> View Entry
+              </MenuItem>
+              <MenuItem
+                disableRipple
+                onClick={() => {
+                  const newPost = { ...post };
+                  newPost.published = !newPost.published;
+                  saveEntry(newPost);
+                }}
+              >
+                <ArticleOutlinedIcon />{" "}
+                {post.published ? "Un-publish" : "Publish"}
+              </MenuItem>
             </CustomizedMenu>
           </div>
         </div>

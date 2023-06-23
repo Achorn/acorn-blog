@@ -25,6 +25,8 @@
 }
 
 .Entry-title-editor {
+  cursor: default;
+
   box-sizing: border-box;
 
   resize: none;
@@ -43,6 +45,7 @@
 }
 
 .Entry-content-display {
+  cursor: default;
   box-sizing: border-box;
   white-space: pre-wrap;
   width: 100%;
@@ -56,7 +59,7 @@
   font-size: 22px;
   /* color: var(--primary_color); */
   font-weight: 500;
-  line-height: 25px;
+  /* line-height: 25px; */
   text-align: left;
 
   text-transform: none;

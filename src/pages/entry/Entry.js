@@ -18,7 +18,9 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 import { useSnackBar } from "../../context/SnackBarContext";
+import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 
 const Entry = () => {
   const navigate = useNavigate();
@@ -44,25 +46,25 @@ const Entry = () => {
   //   );
   // };
 
-  // const saveEntry = async (newPost) => {
-  //   setAlert({ message: "saving" });
-  //   var d = new Date(Date.now());
-  //   newPost.lastUpdated = d;
-  //   await putDoc({
-  //     docRef: `/entries/${id}`,
-  //     docObject: newPost,
-  //   })
-  //     .then(() => {
-  //       setAlert({ message: "saved", severity: "info" });
-  //     })
-  //     .catch((err) => {
-  //       setAlert({
-  //         message: "Error saving: " + err.code,
-  //         severity: "error",
-  //         duration: 6000,
-  //       });
-  //     });
-  // };
+  const saveEntry = async (newPost) => {
+    setAlert({ message: "saving" });
+    var d = new Date(Date.now());
+    newPost.lastUpdated = d;
+    await putDoc({
+      docRef: `/entries/${id}`,
+      docObject: newPost,
+    })
+      .then(() => {
+        setAlert({ message: "saved", severity: "info" });
+      })
+      .catch((err) => {
+        setAlert({
+          message: "Error saving: " + err.code,
+          severity: "error",
+          duration: 6000,
+        });
+      });
+  };
 
   const deleteEntry = async () => {
     return await deleteDocument({
@@ -118,40 +120,40 @@ const Entry = () => {
       <div className="Entr-container">
         <div className="Entr-width">
           <div className="Title-with-dropdown">
-            {/* <input
-              maxLength={50}
-              type="text"
-              className="Entry-title-editor"
-              placeholder="New Title"
-              defaultValue={post.title}
-              onChange={(e) => {
-                let updatedPost = { ...post };
-                updatedPost.title = e.target.value;
-                handleUpdatePost(updatedPost);
-              }}
-            /> */}
             <div className="Entry-title-editor">{post.title}</div>
           </div>
           <div className="Entry-content-display">
             <p>{post.content}</p>
           </div>
-          {/* <textarea
-            type="text"
-            className="Entry-content-editor"
-            placeholder="Start Journaling"
-            defaultValue={post.content}
-            onChange={(e) => {
-              let updatedPost = { ...post };
-              updatedPost.content = e.target.value;
-              handleUpdatePost(updatedPost);
-            }}
-          /> */}
+
           <div>
-            <CustomizedMenu>
-              <AlertDialog handleClick={deleteEntry} />
-            </CustomizedMenu>
+            {user ? (
+              <CustomizedMenu>
+                <AlertDialog handleClick={deleteEntry} />
+                <MenuItem
+                  disableRipple
+                  onClick={() => navigate(`/entry/${id}/edit`)}
+                >
+                  <CreateOutlinedIcon /> Edit
+                </MenuItem>
+                <MenuItem
+                  disableRipple
+                  onClick={() => {
+                    const newPost = { ...post };
+                    newPost.published = !newPost.published;
+                    saveEntry(newPost);
+                  }}
+                >
+                  <ArticleOutlinedIcon />{" "}
+                  {post.published ? "Un-publish" : "Publish"}
+                </MenuItem>
+              </CustomizedMenu>
+            ) : (
+              <div />
+            )}
           </div>
         </div>
+        <div style={{ height: "100px" }}></div>
       </div>
     );
   }

@@ -31,6 +31,7 @@ const Home = () => {
       <h1> Your Entries </h1>
       <CreateEntryButton userId={user.uid} />
       <Entries userId={user.uid} />
+      <div style={{ height: "100px" }}></div>
     </div>
   );
 };
