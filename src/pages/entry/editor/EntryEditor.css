@@ -44,7 +44,7 @@
 
 .Entry-content-editor {
   box-sizing: border-box;
-  white-space: pre-wrap;
+
   width: 100%;
   /* background-color: red; */
   resize: none;

@@ -55,7 +55,7 @@ const CreateEntryButton = ({ userId }) => {
       },
     })
       .then((res) => {
-        navigate(`/entry/${res.id}`);
+        navigate(`/entry/${res.id}/edit`);
       })
       .catch((err) => {
         console.log(err);
@@ -131,9 +131,7 @@ const Entry = ({ entry }) => {
   return (
     <NavLink className="Entry-link" to={`/Entry/${entry.key}`}>
       <div className="Entry-container">
-        <h3 className="Entry-title">
-          {entry.title ? entry.title : '"Empty Title..."'}
-        </h3>
+        <h3 className="Entry-title">{entry.title ? entry.title : '" "'}</h3>
         {" - "}
         <h4 className="Entry-date">
           {entry.created.toDate().toLocaleDateString()}

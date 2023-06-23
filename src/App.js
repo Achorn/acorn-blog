@@ -8,6 +8,7 @@ import { Routes, Route } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Nav from "./components/nav/Nav";
 import { SnackBarProvider } from "./context/SnackBarContext";
+import EntryEditor from "./pages/entry/editor/EntryEditor";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
                 }
               />
               <Route path={"entry/:id"} element={<Entry />} />
+              <Route path={"entry/:id/edit"} element={<EntryEditor />} />
             </Routes>
           </UserLoading>
           {/* <Footer /> */}
