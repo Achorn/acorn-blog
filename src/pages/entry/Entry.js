@@ -132,7 +132,7 @@ const Entry = () => {
             /> */}
             <div className="Entry-title-editor">{post.title}</div>
           </div>
-          <div className="Entry-content-editor">
+          <div className="Entry-content-display">
             <p>{post.content}</p>
           </div>
           {/* <textarea
