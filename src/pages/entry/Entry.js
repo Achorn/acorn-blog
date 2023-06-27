@@ -105,8 +105,13 @@ const Entry = () => {
       <div className="Entr-container">
         <div className="Entr-width">
           <div className="Title-with-dropdown">
-            <div className="Entry-title-editor">{post.title}</div>
+            <div className="Entr-title">{post.title}</div>
           </div>
+          {/* <div>{`${countWords(post.content)} words`}</div> */}
+          <p className="Entry-details">{`${Math.round(
+            wordcount(countWords(post.content))
+          )} minute read`}</p>
+
           <div className="Entry-content-display">
             <p>{post.content}</p>
           </div>
@@ -210,3 +215,11 @@ const AlertDialog = ({ handleClick }) => {
 };
 
 export default Entry;
+
+function countWords(str) {
+  return str.trim().split(/\s+/).length;
+}
+
+function wordcount(numWords) {
+  return numWords / 200;
+}
