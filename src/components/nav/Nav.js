@@ -21,28 +21,14 @@ const Nav = () => {
 };
 
 const Account = () => {
-  const { user, logOut, loading } = useAuth();
+  const { user, loading } = useAuth();
 
-  // const handleLogout = async () => {
-  //   await logOut()
-  //     .then(() => {
-  //       console.log("Signed out successfully");
-  //     })
-  //     .catch((error) => {
-  //       console.log(error.message);
-  //     });
-  // };
   let account = (
     <div className="Logout-btn">
       <NavLink to={`/signin`}> sign In </NavLink>
     </div>
   );
-  if (loading)
-    account = (
-      <div className="Logout-btn">
-        <CircularProgress size={30} thickness={4} />
-      </div>
-    );
+  if (loading) account = <div className="Logout-btn"></div>;
   if (user) {
     account = <AccountMenu />;
   }
