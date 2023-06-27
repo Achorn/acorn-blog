@@ -8,10 +8,7 @@ import useFirestore from "../../hooks/useFirestore";
 import { useNavigate } from "react-router-dom";
 import "./Entry.css";
 import Button from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { IconButton } from "@mui/material";
-import { FiMoreHorizontal } from "react-icons/fi";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -21,6 +18,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 import { useSnackBar } from "../../context/SnackBarContext";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
+import DropdownMenu from "../../components/dropdown/DropDown";
 
 const Entry = () => {
   const navigate = useNavigate();
@@ -115,7 +113,7 @@ const Entry = () => {
 
           <div>
             {user ? (
-              <CustomizedMenu>
+              <DropdownMenu>
                 <AlertDialog handleClick={deleteEntry} />
                 <MenuItem
                   disableRipple
@@ -134,7 +132,7 @@ const Entry = () => {
                   <ArticleOutlinedIcon />{" "}
                   {post.published ? "Un-publish" : "Publish"}
                 </MenuItem>
-              </CustomizedMenu>
+              </DropdownMenu>
             ) : (
               <div />
             )}
@@ -146,26 +144,26 @@ const Entry = () => {
   }
 };
 
-const CustomizedMenu = ({ children }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  return (
-    <div>
-      <IconButton onClick={handleClick}>
-        <FiMoreHorizontal />
-      </IconButton>
-      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        {children}
-      </Menu>
-    </div>
-  );
-};
+// const CustomizedMenu = ({ children }) => {
+//   const [anchorEl, setAnchorEl] = React.useState(null);
+//   const open = Boolean(anchorEl);
+//   const handleClick = (event) => {
+//     setAnchorEl(event.currentTarget);
+//   };
+//   const handleClose = () => {
+//     setAnchorEl(null);
+//   };
+//   return (
+//     <div>
+//       <IconButton onClick={handleClick}>
+//         <FiMoreHorizontal />
+//       </IconButton>
+//       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+//         {children}
+//       </Menu>
+//     </div>
+//   );
+// };
 
 const AlertDialog = ({ handleClick }) => {
   const [open, setOpen] = React.useState(false);
