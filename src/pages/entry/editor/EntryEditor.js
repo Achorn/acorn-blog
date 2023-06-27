@@ -16,7 +16,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useSnackBar } from "../../../context/SnackBarContext";
-import { useDialogConfirm } from "../../../context/DialogConfirmContext";
+// import { useDialogConfirm } from "../../../context/DialogConfirmContext";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import CropPortraitOutlinedIcon from "@mui/icons-material/CropPortraitOutlined";
 import DropdownMenu from "../../../components/dropdown/DropDown";
@@ -27,7 +27,7 @@ const EntryEditor = () => {
   const { id } = useParams();
   const [post, setPost] = useState({});
   const { setAlert } = useSnackBar();
-  const { setConfirmation } = useDialogConfirm();
+  // const { setConfirmation } = useDialogConfirm();
   const [loadingPost, setIsLoadingPost] = useState(false);
   const [timeoutId, setTimeoutId] = useState();
   const { deleteDocument, putDoc } = useFirestore();
@@ -162,7 +162,7 @@ const EntryEditor = () => {
                 <ArticleOutlinedIcon />{" "}
                 {post.published ? "Un-publish" : "Publish"}
               </MenuItem>
-              <MenuItem
+              {/* <MenuItem
                 onClick={() =>
                   setConfirmation({
                     title: "Title test",
@@ -172,7 +172,7 @@ const EntryEditor = () => {
                 }
               >
                 {"Test dialog box"}
-              </MenuItem>
+              </MenuItem> */}
             </DropdownMenu>
           </div>
         </div>
@@ -205,12 +205,7 @@ const AlertDialog = ({ handleClick }) => {
         <DeleteOutlineIcon />
         Delete
       </MenuItem>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        // aria-labelledby="alert-dialog-title"
-        // aria-describedby="alert-dialog-description"
-      >
+      <Dialog open={open} onClose={handleClose}>
         <DialogTitle id="alert-dialog-title">{"Deleting Entry"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">

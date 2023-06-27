@@ -149,27 +149,6 @@ const Entry = () => {
   }
 };
 
-// const CustomizedMenu = ({ children }) => {
-//   const [anchorEl, setAnchorEl] = React.useState(null);
-//   const open = Boolean(anchorEl);
-//   const handleClick = (event) => {
-//     setAnchorEl(event.currentTarget);
-//   };
-//   const handleClose = () => {
-//     setAnchorEl(null);
-//   };
-//   return (
-//     <div>
-//       <IconButton onClick={handleClick}>
-//         <FiMoreHorizontal />
-//       </IconButton>
-//       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-//         {children}
-//       </Menu>
-//     </div>
-//   );
-// };
-
 const AlertDialog = ({ handleClick }) => {
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = useState(false);
