@@ -19,6 +19,7 @@ import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 import { useSnackBar } from "../../context/SnackBarContext";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import DropdownMenu from "../../components/dropdown/DropDown";
+import { CircularProgress } from "@mui/material";
 
 const Entry = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const Entry = () => {
   const [post, setPost] = useState({});
   const { setAlert } = useSnackBar();
 
-  const [loadingPost, setIsLoadingPost] = useState(false);
+  const [loadingPost, setIsLoadingPost] = useState(true);
   const { deleteDocument, putDoc } = useFirestore();
   const [error, setError] = useState();
 
@@ -97,7 +98,12 @@ const Entry = () => {
   }, [id, user]);
 
   if (loadingPost) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        {" "}
+        <CircularProgress color="inherit" />
+      </div>
+    );
   } else if (JSON.stringify(post) === "{}" || error) {
     return <div>no post here...</div>;
   } else {

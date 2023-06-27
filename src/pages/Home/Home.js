@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { NavLink, useNavigate } from "react-router-dom";
 import useFirestore from "../../hooks/useFirestore";
+import { CircularProgress } from "@mui/material";
 import "./Home.css";
 
 import {
@@ -113,7 +114,12 @@ const Entries = ({ userId }) => {
   }, [userId]);
 
   if (isLoading) {
-    return <div>loading Entries...</div>;
+    return (
+      <div>
+        {" "}
+        <CircularProgress color="inherit" />
+      </div>
+    );
   }
   if (err) {
     return <div>{err}</div>;
