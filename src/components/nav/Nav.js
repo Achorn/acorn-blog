@@ -10,7 +10,7 @@ const Nav = () => {
       <div className="Home-btn-container">
         <NavLink to={`/`} className="Home-btn-link">
           <AcornIcon className="Nav-icon" />
-          <h2 className="Home-btn-txt"> BLOG</h2>
+          <h2 className="Home-btn-txt">Blog</h2>
         </NavLink>
       </div>
       <Account />

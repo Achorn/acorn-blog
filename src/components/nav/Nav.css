@@ -16,7 +16,9 @@
 }
 
 .Home-btn-txt {
-  font-size: 1.7em;
+  white-space: nowrap;
+  font-family: "Bitter", serif;
+  font-size: 2.2em;
 }
 .Home-btn-link {
   /* float: left; */
