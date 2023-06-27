@@ -8,10 +8,7 @@ import useFirestore from "../../../hooks/useFirestore";
 import { useNavigate } from "react-router-dom";
 import "./EntryEditor.css";
 import Button from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { IconButton } from "@mui/material";
-import { FiMoreHorizontal } from "react-icons/fi";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -19,8 +16,10 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useSnackBar } from "../../../context/SnackBarContext";
+// import { useDialogConfirm } from "../../../context/DialogConfirmContext";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import CropPortraitOutlinedIcon from "@mui/icons-material/CropPortraitOutlined";
+import DropdownMenu from "../../../components/dropdown/DropDown";
 
 const EntryEditor = () => {
   const navigate = useNavigate();
@@ -28,7 +27,7 @@ const EntryEditor = () => {
   const { id } = useParams();
   const [post, setPost] = useState({});
   const { setAlert } = useSnackBar();
-
+  // const { setConfirmation } = useDialogConfirm();
   const [loadingPost, setIsLoadingPost] = useState(false);
   const [timeoutId, setTimeoutId] = useState();
   const { deleteDocument, putDoc } = useFirestore();
@@ -147,7 +146,7 @@ const EntryEditor = () => {
             }}
           />
           <div>
-            <CustomizedMenu>
+            <DropdownMenu>
               <AlertDialog handleClick={deleteEntry} />
               <MenuItem disableRipple onClick={() => navigate(`/entry/${id}/`)}>
                 <CropPortraitOutlinedIcon /> View Entry
@@ -163,33 +162,23 @@ const EntryEditor = () => {
                 <ArticleOutlinedIcon />{" "}
                 {post.published ? "Un-publish" : "Publish"}
               </MenuItem>
-            </CustomizedMenu>
+              {/* <MenuItem
+                onClick={() =>
+                  setConfirmation({
+                    title: "Title test",
+                    description: "this is the description for the tester",
+                    handleClick: () => console.log("test clicked"),
+                  })
+                }
+              >
+                {"Test dialog box"}
+              </MenuItem> */}
+            </DropdownMenu>
           </div>
         </div>
       </div>
     );
   }
-};
-
-const CustomizedMenu = ({ children }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  return (
-    <div>
-      <IconButton onClick={handleClick}>
-        <FiMoreHorizontal />
-      </IconButton>
-      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        {children}
-      </Menu>
-    </div>
-  );
 };
 
 const AlertDialog = ({ handleClick }) => {
@@ -216,12 +205,7 @@ const AlertDialog = ({ handleClick }) => {
         <DeleteOutlineIcon />
         Delete
       </MenuItem>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        // aria-labelledby="alert-dialog-title"
-        // aria-describedby="alert-dialog-description"
-      >
+      <Dialog open={open} onClose={handleClose}>
         <DialogTitle id="alert-dialog-title">{"Deleting Entry"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">

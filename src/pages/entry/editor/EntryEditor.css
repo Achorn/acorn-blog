@@ -4,10 +4,7 @@
   flex-direction: column;
   justify-content: center;
 }
-.Entr-width {
-  max-width: 800px;
-  width: 70vw;
-}
+
 .Title-with-dropdown {
   /* background-color: black; */
   display: flex;
@@ -63,12 +60,4 @@
   /* background-color: pink; */
   padding: 15px;
   border-bottom: 1px solid #ededed;
-}
-
-/* smaller screens */
-
-@media only screen and (max-width: 800px) {
-  .Entr-width {
-    width: 95vw;
-  }
 }

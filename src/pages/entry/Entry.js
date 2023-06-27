@@ -8,10 +8,7 @@ import useFirestore from "../../hooks/useFirestore";
 import { useNavigate } from "react-router-dom";
 import "./Entry.css";
 import Button from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { IconButton } from "@mui/material";
-import { FiMoreHorizontal } from "react-icons/fi";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -21,6 +18,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 import { useSnackBar } from "../../context/SnackBarContext";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
+import DropdownMenu from "../../components/dropdown/DropDown";
 
 const Entry = () => {
   const navigate = useNavigate();
@@ -107,15 +105,20 @@ const Entry = () => {
       <div className="Entr-container">
         <div className="Entr-width">
           <div className="Title-with-dropdown">
-            <div className="Entry-title-editor">{post.title}</div>
+            <div className="Entr-title">{post.title}</div>
           </div>
+          {/* <div>{`${countWords(post.content)} words`}</div> */}
+          <p className="Entry-details">{`${Math.round(
+            wordcount(countWords(post.content))
+          )} minute read`}</p>
+
           <div className="Entry-content-display">
             <p>{post.content}</p>
           </div>
 
           <div>
             {user ? (
-              <CustomizedMenu>
+              <DropdownMenu>
                 <AlertDialog handleClick={deleteEntry} />
                 <MenuItem
                   disableRipple
@@ -134,7 +137,7 @@ const Entry = () => {
                   <ArticleOutlinedIcon />{" "}
                   {post.published ? "Un-publish" : "Publish"}
                 </MenuItem>
-              </CustomizedMenu>
+              </DropdownMenu>
             ) : (
               <div />
             )}
@@ -144,27 +147,6 @@ const Entry = () => {
       </div>
     );
   }
-};
-
-const CustomizedMenu = ({ children }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  return (
-    <div>
-      <IconButton onClick={handleClick}>
-        <FiMoreHorizontal />
-      </IconButton>
-      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        {children}
-      </Menu>
-    </div>
-  );
 };
 
 const AlertDialog = ({ handleClick }) => {
@@ -212,3 +194,11 @@ const AlertDialog = ({ handleClick }) => {
 };
 
 export default Entry;
+
+function countWords(str) {
+  return str.trim().split(/\s+/).length;
+}
+
+function wordcount(numWords) {
+  return numWords / 200;
+}

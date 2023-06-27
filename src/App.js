@@ -10,47 +10,50 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import Nav from "./components/nav/Nav";
 import { SnackBarProvider } from "./context/SnackBarContext";
 import EntryEditor from "./pages/entry/editor/EntryEditor";
+import { DialogConfirmProvider } from "./context/DialogConfirmContext";
 
 function App() {
   return (
     <div className="App">
       <AuthProvider>
         <SnackBarProvider>
-          <Nav />
-          <UserLoading>
-            <Routes>
-              <Route exact path="/" element={<Home />} />
-              <Route
-                exact
-                path={"/signup"}
-                element={
-                  <PublicRoute>
-                    <SignUp />
-                  </PublicRoute>
-                }
-              />
-              <Route
-                exact
-                path={"/signin"}
-                element={
-                  <PublicRoute>
-                    <SignIn />
-                  </PublicRoute>
-                }
-              />
-              <Route path={"entry/:id"} element={<Entry />} />
+          <DialogConfirmProvider>
+            <Nav />
+            <UserLoading>
+              <Routes>
+                <Route exact path="/" element={<Home />} />
+                <Route
+                  exact
+                  path={"/signup"}
+                  element={
+                    <PublicRoute>
+                      <SignUp />
+                    </PublicRoute>
+                  }
+                />
+                <Route
+                  exact
+                  path={"/signin"}
+                  element={
+                    <PublicRoute>
+                      <SignIn />
+                    </PublicRoute>
+                  }
+                />
+                <Route path={"entry/:id"} element={<Entry />} />
 
-              <Route
-                path={"entry/:id/edit"}
-                element={
-                  <PrivateRoute>
-                    <EntryEditor />
-                  </PrivateRoute>
-                }
-              />
-            </Routes>
-          </UserLoading>
-          {/* <Footer /> */}
+                <Route
+                  path={"entry/:id/edit"}
+                  element={
+                    <PrivateRoute>
+                      <EntryEditor />
+                    </PrivateRoute>
+                  }
+                />
+              </Routes>
+            </UserLoading>
+            {/* <Footer /> */}
+          </DialogConfirmProvider>
         </SnackBarProvider>
       </AuthProvider>
     </div>

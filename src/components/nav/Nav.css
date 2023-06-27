@@ -14,6 +14,12 @@
   padding-right: 10px;
   margin-left: 10px;
 }
+
+.Home-btn-txt {
+  white-space: nowrap;
+  font-family: "Bitter", serif;
+  font-size: 2.2em;
+}
 .Home-btn-link {
   /* float: left; */
   color: black;

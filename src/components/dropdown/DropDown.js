@@ -1,43 +1,27 @@
-import React from "react";
-import "./DropDown.css";
+import Menu from "@mui/material/Menu";
+// import MenuItem from "@mui/material/MenuItem";
+import { IconButton } from "@mui/material";
 import { FiMoreHorizontal } from "react-icons/fi";
-const DropDown = ({ children }) => {
+import { useState } from "react";
+const DropdownMenu = ({ children }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
-    <div className="dropdown">
-      {/* <button onClick={myFunction} className="dropbtn"> */}
-      <FiMoreHorizontal className="dropbtn" size="23px" onClick={myFunction} />
-      {/* ... */}
-      {/* </button> */}
-      <div id="myDropdown" className="dropdown-content">
+    <div>
+      <IconButton onClick={handleClick}>
+        <FiMoreHorizontal />
+      </IconButton>
+      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         {children}
-        {/* <a>Link 1</a>
-        <a>Link 2</a>
-        <a>Link 3</a> */}
-      </div>
+      </Menu>
     </div>
   );
 };
 
-export default DropDown;
-
-const myFunction = (e) => {
-  console.log("triggered button");
-
-  // e.preventDefault();
-
-  document.getElementById("myDropdown").classList.toggle("show");
-};
-
-// Close the dropdown menu if the user clicks outside of it
-window.onclick = function (event) {
-  if (!event.target.matches(".dropbtn")) {
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains("show")) {
-        openDropdown.classList.remove("show");
-      }
-    }
-  }
-};
+export default DropdownMenu;
