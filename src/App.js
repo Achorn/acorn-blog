@@ -11,6 +11,7 @@ import Nav from "./components/nav/Nav";
 import { SnackBarProvider } from "./context/SnackBarContext";
 import EntryEditor from "./pages/entry/editor/EntryEditor";
 import { DialogConfirmProvider } from "./context/DialogConfirmContext";
+import { CircularProgress } from "@mui/material";
 
 function App() {
   return (
@@ -52,7 +53,6 @@ function App() {
                 />
               </Routes>
             </UserLoading>
-            {/* <Footer /> */}
           </DialogConfirmProvider>
         </SnackBarProvider>
       </AuthProvider>
@@ -63,14 +63,13 @@ function App() {
 const UserLoading = ({ children }) => {
   const { loading } = useAuth();
   if (loading) {
-    return <div>LOADING...</div>;
+    return (
+      <div>
+        <CircularProgress color="inherit" />
+      </div>
+    );
   }
-
   return <div>{children}</div>;
 };
-
-// const Footer = () => {
-//   return <div className="Footer"></div>;
-// };
 
 export default App;

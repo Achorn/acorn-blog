@@ -16,19 +16,19 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useSnackBar } from "../../../context/SnackBarContext";
-// import { useDialogConfirm } from "../../../context/DialogConfirmContext";
+import { CircularProgress } from "@mui/material";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import CropPortraitOutlinedIcon from "@mui/icons-material/CropPortraitOutlined";
 import DropdownMenu from "../../../components/dropdown/DropDown";
 
 const EntryEditor = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const { id } = useParams();
   const [post, setPost] = useState({});
   const { setAlert } = useSnackBar();
   // const { setConfirmation } = useDialogConfirm();
-  const [loadingPost, setIsLoadingPost] = useState(false);
+  const [loadingPost, setIsLoadingPost] = useState(true);
   const [timeoutId, setTimeoutId] = useState();
   const { deleteDocument, putDoc } = useFirestore();
   const [error, setError] = useState();
@@ -110,8 +110,12 @@ const EntryEditor = () => {
     return () => unsubscribe();
   }, [id, user]);
 
-  if (loadingPost) {
-    return <div>Loading...</div>;
+  if (loadingPost || loading) {
+    return (
+      <div>
+        <CircularProgress color="inherit" />
+      </div>
+    );
   } else if (JSON.stringify(post) === "{}" || error) {
     return <div>nothing to edit</div>;
   } else if (!user || user.uid !== post.user) {

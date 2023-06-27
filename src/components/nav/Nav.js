@@ -4,6 +4,8 @@ import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { ReactComponent as AcornIcon } from "../../assets/icons/acorn.svg";
 import { CircularProgress } from "@mui/material";
+import AccountMenu from "../account-menu/AccountMenu";
+
 const Nav = () => {
   return (
     <div className="Nav-container">
@@ -19,40 +21,19 @@ const Nav = () => {
 };
 
 const Account = () => {
-  const { user, logOut, loading } = useAuth();
+  const { user, loading } = useAuth();
 
-  const handleLogout = async () => {
-    await logOut()
-      .then(() => {
-        console.log("Signed out successfully");
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-  };
   let account = (
     <div className="Logout-btn">
       <NavLink to={`/signin`}> sign In </NavLink>
     </div>
   );
-  if (loading)
-    account = (
-      <div className="Logout-btn">
-        <CircularProgress size={30} thickness={4} />
-      </div>
-    );
+  if (loading) account = <div className="Logout-btn"></div>;
   if (user) {
-    account = (
-      <div className="Acount-container">
-        <div className="Email">{user.email}</div>
-        <button className="Logout-btn" onClick={handleLogout}>
-          logout
-        </button>
-      </div>
-    );
+    account = <AccountMenu />;
   }
 
-  return <div className="Acount-container">{account}</div>;
+  return <div className="Acount-container">{account} </div>;
 };
 
 export default Nav;
