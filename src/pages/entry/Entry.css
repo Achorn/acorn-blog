@@ -46,14 +46,13 @@
   white-space: pre-wrap;
   width: 100%;
   resize: none;
-  min-height: 70vh;
   border: 0px solid;
   outline: none;
   font-family: "futura-pt", sans-serif;
   font-size: 22px;
   font-weight: 500;
   text-align: left;
-
+  margin-bottom: 10px;
   text-transform: none;
   border-bottom: 1px solid #ededed;
 }
