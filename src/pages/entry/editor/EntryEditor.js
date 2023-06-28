@@ -126,6 +126,7 @@ const EntryEditor = () => {
         <div className="Entr-width">
           <div className="Title-with-dropdown">
             <input
+              autoFocus={post.title ? false : true}
               maxLength={50}
               type="text"
               className="Entry-title-editor"
@@ -139,6 +140,7 @@ const EntryEditor = () => {
             />
           </div>
           <textarea
+            autoFocus={post.content || !post.title ? false : true}
             type="text"
             className="Entry-content-editor"
             placeholder="Start Journaling"
@@ -166,17 +168,6 @@ const EntryEditor = () => {
                 <ArticleOutlinedIcon />{" "}
                 {post.published ? "Un-publish" : "Publish"}
               </MenuItem>
-              {/* <MenuItem
-                onClick={() =>
-                  setConfirmation({
-                    title: "Title test",
-                    description: "this is the description for the tester",
-                    handleClick: () => console.log("test clicked"),
-                  })
-                }
-              >
-                {"Test dialog box"}
-              </MenuItem> */}
             </DropdownMenu>
           </div>
         </div>

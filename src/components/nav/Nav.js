@@ -3,7 +3,6 @@ import "./Nav.css";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { ReactComponent as AcornIcon } from "../../assets/icons/acorn.svg";
-import { CircularProgress } from "@mui/material";
 import AccountMenu from "../account-menu/AccountMenu";
 
 const Nav = () => {
@@ -12,7 +11,7 @@ const Nav = () => {
       <div className="Home-btn-container">
         <NavLink to={`/`} className="Home-btn-link">
           <AcornIcon className="Nav-icon" />
-          <h2 className="Home-btn-txt">Blog</h2>
+          <h2 className="Home-btn-txt">BLOG</h2>
         </NavLink>
       </div>
       <Account />
