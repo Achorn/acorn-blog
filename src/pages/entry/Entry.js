@@ -19,7 +19,7 @@ import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 import { useSnackBar } from "../../context/SnackBarContext";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import DropdownMenu from "../../components/dropdown/DropDown";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, ListItemIcon } from "@mui/material";
 
 const Entry = () => {
   const navigate = useNavigate();
@@ -130,7 +130,10 @@ const Entry = () => {
                   disableRipple
                   onClick={() => navigate(`/entry/${id}/edit`)}
                 >
-                  <CreateOutlinedIcon /> Edit
+                  <ListItemIcon>
+                    <CreateOutlinedIcon />
+                  </ListItemIcon>
+                  Edit
                 </MenuItem>
                 <MenuItem
                   disableRipple
@@ -140,7 +143,9 @@ const Entry = () => {
                     saveEntry(newPost);
                   }}
                 >
-                  <ArticleOutlinedIcon />{" "}
+                  <ListItemIcon>
+                    <ArticleOutlinedIcon />
+                  </ListItemIcon>
                   {post.published ? "Un-publish" : "Publish"}
                 </MenuItem>
               </DropdownMenu>
@@ -176,7 +181,9 @@ const AlertDialog = ({ handleClick }) => {
   return (
     <div>
       <MenuItem disableRipple onClick={handleClickOpen}>
-        <DeleteOutlineIcon />
+        <ListItemIcon>
+          <DeleteOutlineIcon />
+        </ListItemIcon>
         Delete
       </MenuItem>
       <Dialog open={open} onClose={handleClose}>

@@ -16,7 +16,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useSnackBar } from "../../../context/SnackBarContext";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, ListItemIcon } from "@mui/material";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import CropPortraitOutlinedIcon from "@mui/icons-material/CropPortraitOutlined";
 import DropdownMenu from "../../../components/dropdown/DropDown";
@@ -126,6 +126,7 @@ const EntryEditor = () => {
         <div className="Entr-width">
           <div className="Title-with-dropdown">
             <input
+              autoFocus={post.title ? false : true}
               maxLength={50}
               type="text"
               className="Entry-title-editor"
@@ -139,6 +140,7 @@ const EntryEditor = () => {
             />
           </div>
           <textarea
+            autoFocus={post.content || !post.title ? false : true}
             type="text"
             className="Entry-content-editor"
             placeholder="Start Journaling"
@@ -153,7 +155,10 @@ const EntryEditor = () => {
             <DropdownMenu>
               <AlertDialog handleClick={deleteEntry} />
               <MenuItem disableRipple onClick={() => navigate(`/entry/${id}/`)}>
-                <CropPortraitOutlinedIcon /> View Entry
+                <ListItemIcon>
+                  <CropPortraitOutlinedIcon />
+                </ListItemIcon>
+                View Entry
               </MenuItem>
               <MenuItem
                 disableRipple
@@ -163,20 +168,11 @@ const EntryEditor = () => {
                   saveEntry(newPost);
                 }}
               >
-                <ArticleOutlinedIcon />{" "}
+                <ListItemIcon>
+                  <ArticleOutlinedIcon />
+                </ListItemIcon>
                 {post.published ? "Un-publish" : "Publish"}
               </MenuItem>
-              {/* <MenuItem
-                onClick={() =>
-                  setConfirmation({
-                    title: "Title test",
-                    description: "this is the description for the tester",
-                    handleClick: () => console.log("test clicked"),
-                  })
-                }
-              >
-                {"Test dialog box"}
-              </MenuItem> */}
             </DropdownMenu>
           </div>
         </div>
@@ -206,7 +202,9 @@ const AlertDialog = ({ handleClick }) => {
   return (
     <div>
       <MenuItem disableRipple onClick={handleClickOpen}>
-        <DeleteOutlineIcon />
+        <ListItemIcon>
+          <DeleteOutlineIcon />
+        </ListItemIcon>
         Delete
       </MenuItem>
       <Dialog open={open} onClose={handleClose}>
