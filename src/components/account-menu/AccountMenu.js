@@ -86,7 +86,7 @@ export default function AccountMenu() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={() => {}}>
+        <MenuItem>
           <Avatar /> {user ? user.email : ""}
         </MenuItem>
         <Divider />
