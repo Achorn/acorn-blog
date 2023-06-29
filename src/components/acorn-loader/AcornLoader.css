@@ -1,0 +1,56 @@
+.Under-construction {
+  border-style: solid;
+  border-color: var(--primary_color);
+  margin: 10px;
+  padding: 10px;
+  padding-right: 20px;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(350deg);
+}
+.Construction-stamp {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+#under-construction-text {
+  color: var(--primary_color);
+  user-select: none;
+  /* border-style: solid; */
+  /* border-color: blue; */
+  font-family: "futura-pt", sans-serif;
+  font-weight: 500;
+  /* line-height: 2.23vw; */
+  /* letter-spacing: 0.39vw; */
+  font-size: 23px;
+}
+
+.Acorn-logo {
+  padding: 1.5vw;
+  /* border-style: solid; */
+  /* border-color: blue; */
+  height: 3vw;
+  min-height: 40px;
+  width: auto;
+  fill: var(--primary_color);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .Acorn-logo {
+    animation: Acorn-logo-spin infinite 1s cubic-bezier(0.5, -0.34, 0.39, 1.35);
+  }
+}
+
+@keyframes Acorn-logo-spin {
+  from {
+    transform: rotate(30deg);
+  }
+  to {
+    transform: rotate(390deg);
+  }
+}
