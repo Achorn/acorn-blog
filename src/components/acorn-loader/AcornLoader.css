@@ -1,0 +1,20 @@
+.Acorn-logo {
+  width: auto;
+  fill: var(--primary_color);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .Acorn-logo {
+    animation: Acorn-logo-spin infinite 1.1s
+      cubic-bezier(0.5, -0.34, 0.39, 1.35);
+  }
+}
+
+@keyframes Acorn-logo-spin {
+  from {
+    transform: rotate(30deg);
+  }
+  to {
+    transform: rotate(390deg);
+  }
+}

@@ -11,7 +11,7 @@ import Nav from "./components/nav/Nav";
 import { SnackBarProvider } from "./context/SnackBarContext";
 import EntryEditor from "./pages/entry/editor/EntryEditor";
 import { DialogConfirmProvider } from "./context/DialogConfirmContext";
-import { CircularProgress } from "@mui/material";
+import AcornLoader from "./components/acorn-loader/AcornLoader";
 
 function App() {
   return (
@@ -19,8 +19,8 @@ function App() {
       <AuthProvider>
         <SnackBarProvider>
           <DialogConfirmProvider>
-            <Nav />
             <UserLoading>
+              <Nav />
               <Routes>
                 <Route exact path="/" element={<Home />} />
                 <Route
@@ -64,8 +64,15 @@ const UserLoading = ({ children }) => {
   const { loading } = useAuth();
   if (loading) {
     return (
-      <div>
-        <CircularProgress color="inherit" />
+      <div
+        style={{
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <AcornLoader size={60} />
       </div>
     );
   }
