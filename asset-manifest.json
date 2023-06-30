@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/acorn-blog/static/css/main.0a43d64f.css",
-    "main.js": "/acorn-blog/static/js/main.949de6b9.js",
+    "main.css": "/acorn-blog/static/css/main.90e35521.css",
+    "main.js": "/acorn-blog/static/js/main.ea0fd9c9.js",
     "static/js/787.ec2499bf.chunk.js": "/acorn-blog/static/js/787.ec2499bf.chunk.js",
     "static/media/acorn.svg": "/acorn-blog/static/media/acorn.c7d7aef178b696248a7e871812d43c2f.svg",
     "index.html": "/acorn-blog/index.html",
-    "main.0a43d64f.css.map": "/acorn-blog/static/css/main.0a43d64f.css.map",
-    "main.949de6b9.js.map": "/acorn-blog/static/js/main.949de6b9.js.map",
+    "main.90e35521.css.map": "/acorn-blog/static/css/main.90e35521.css.map",
+    "main.ea0fd9c9.js.map": "/acorn-blog/static/js/main.ea0fd9c9.js.map",
     "787.ec2499bf.chunk.js.map": "/acorn-blog/static/js/787.ec2499bf.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.0a43d64f.css",
-    "static/js/main.949de6b9.js"
+    "static/css/main.90e35521.css",
+    "static/js/main.ea0fd9c9.js"
   ]
 }
