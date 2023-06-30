@@ -6,6 +6,7 @@ import {
   query,
   deleteDoc,
   doc,
+  updateDoc,
   setDoc,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
@@ -54,11 +55,14 @@ const useFirestore = (collectionName) => {
   function putDoc({ docRef, docObject }) {
     return setDoc(doc(db, docRef), docObject);
   }
+  function patchDoc({ docRef, docObject }) {
+    return updateDoc(doc(db, docRef), docObject);
+  }
   const deleteDocument = ({ docPath, docKey }) => {
     return deleteDoc(doc(db, docPath, docKey));
   };
 
-  return { docs, docsLoading, createDoc, deleteDocument, putDoc };
+  return { docs, docsLoading, createDoc, deleteDocument, putDoc, patchDoc };
 };
 
 export default useFirestore;

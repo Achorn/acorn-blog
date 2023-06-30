@@ -12,6 +12,7 @@ import { SnackBarProvider } from "./context/SnackBarContext";
 import EntryEditor from "./pages/entry/editor/EntryEditor";
 import { DialogConfirmProvider } from "./context/DialogConfirmContext";
 import AcornLoader from "./components/acorn-loader/AcornLoader";
+// import UploadPhoto from "./components/upload-photo/UploadPhoto";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               <Nav />
               <Routes>
                 <Route exact path="/" element={<Home />} />
+                {/* <Route path="/upload/:id" element={<UploadPhoto />} /> */}
                 <Route
                   exact
                   path={"/signup"}

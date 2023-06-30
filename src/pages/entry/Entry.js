@@ -15,6 +15,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+// import AddPhotoAlternateOutlinedIcon from "@mui/icons-material/AddPhotoAlternateOutlined";
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 import { useSnackBar } from "../../context/SnackBarContext";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
@@ -97,6 +98,20 @@ const Entry = () => {
     return () => unsubscribe();
   }, [id, user]);
 
+  const PostPhoto = () => {
+    return post.img ? (
+      <div className="Image-container">
+        <img
+          src={post.img}
+          className="Hero-image"
+          alt="post_img"
+          loading="lazy"
+        />
+      </div>
+    ) : (
+      <div />
+    );
+  };
   if (loadingPost) {
     return (
       <div>
@@ -110,22 +125,20 @@ const Entry = () => {
     return (
       <div className="Entr-container">
         <div className="Entr-width">
-          <div className="Title-with-dropdown">
-            <div className="Entr-title">{post.title}</div>
-          </div>
-          {/* <div>{`${countWords(post.content)} words`}</div> */}
+          {/* <div className="Title-with-dropdown"> */}
+          <div className="Entr-title">{post.title}</div>
+        </div>
+        <PostPhoto />
+        <div className="Entr-width">
           <p className="Entry-details">{`${Math.round(
             wordcount(countWords(post.content))
           )} minute read`}</p>
-
           <div className="Entry-content-display">
             <p>{post.content}</p>
           </div>
-
           <div>
             {user ? (
               <DropdownMenu>
-                <AlertDialog handleClick={deleteEntry} />
                 <MenuItem
                   disableRipple
                   onClick={() => navigate(`/entry/${id}/edit`)}
@@ -135,6 +148,16 @@ const Entry = () => {
                   </ListItemIcon>
                   Edit
                 </MenuItem>
+                {/* <MenuItem
+                  disableRipple
+                  onClick={() => navigate(`/upload/${id}`)}
+                >
+                  <ListItemIcon>
+                    <AddPhotoAlternateOutlinedIcon />{" "}
+                  </ListItemIcon>
+                  Add Photo
+                </MenuItem> */}
+
                 <MenuItem
                   disableRipple
                   onClick={() => {
@@ -148,6 +171,7 @@ const Entry = () => {
                   </ListItemIcon>
                   {post.published ? "Un-publish" : "Publish"}
                 </MenuItem>
+                <AlertDialog handleClick={deleteEntry} />
               </DropdownMenu>
             ) : (
               <div />
